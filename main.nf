@@ -15,7 +15,7 @@ result.subscribe {
     println it.trim()
 }
 Channel
-    .fromPath( "*.mzML" )
+    .fromPath( "/home/jovyan/work/jupyter/jupyter/data2" )
     .ifEmpty { error "Cannot find any files in the folder" }
     .set { mzMLFilesMS1 }//input_set is the output
 
