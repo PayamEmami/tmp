@@ -1,11 +1,11 @@
 #!/usr/bin/env nextflow
 
 Channel
-    .fromPath( "/home/jovyan/work/root/data2/*.mzML" )
+    .fromPath( "/home/jovyan/work/data2/*.mzML" )
     .ifEmpty { error "Cannot find any files in the folder" }
     .set { mzMLFilesMS1 }//input_set is the output
 
-output="/home/ubuntu/out"
+output="/home/jovyan/work/out"
 
 process  XcmsFindPeaks{
 container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.52.0_cv0.8.70'
