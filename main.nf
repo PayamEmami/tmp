@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 Channel
-    .fromPath( "/home/jovyan/work/data2/*.mzML" )
+    .fromPath( "*.mzML" )
     .ifEmpty { error "Cannot find any files in the folder" }
     .set { mzMLFilesMS1 }//input_set is the output
 
