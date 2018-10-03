@@ -1,21 +1,7 @@
 #!/usr/bin/env nextflow
 
-
-process convertToUpper {
-
-    output:
-    stdout result
-
-    """
-    cat $PWD
-    """
-}
-
-result.subscribe {
-    println it.trim()
-}
 Channel
-    .fromPath( "/home/jovyan/work/jupyter/jupyter/data2" )
+    .fromPath( "/home/jovyan/work/root/data2/" )
     .ifEmpty { error "Cannot find any files in the folder" }
     .set { mzMLFilesMS1 }//input_set is the output
 
