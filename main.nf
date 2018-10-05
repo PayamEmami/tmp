@@ -22,7 +22,7 @@ output="/home/jovyan/work/fibro/fibro/outNoFilter"
 	
 process  XcmsFindPeaks{
 container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.52.0_cv0.8.70'
-memory '1 GB'
+memory '3 GB'
 cpus 1
 
 stageInMode 'copy'
