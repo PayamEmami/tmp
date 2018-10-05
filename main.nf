@@ -22,9 +22,6 @@ output="/home/jovyan/work/fibro/fibro/outNoFilter"
 	
 process  XcmsFindPeaks{
 container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.52.0_cv0.8.70'
-memory '3 GB'
-cpus 1
-
 stageInMode 'copy'
 publishDir "${output}/findPeaks", mode: 'copy'
 
@@ -46,8 +43,6 @@ file "${mzMLFile.baseName}.rdata" into collectFiles, test5
 
 process  collectXCMS{
 container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.52.0_cv0.8.70'
-memory '1 GB'
-cpus 1
 stageInMode 'copy'
 publishDir "${output}/collected", mode: 'copy'
 
@@ -71,11 +66,8 @@ script:
 
 process  groupPeaks_1{
 container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.52.0_cv0.8.70'
-memory '5 GB'
-cpus 1
 stageInMode 'copy'
 publishDir "${output}/group1", mode: 'copy'
-
 
   input:
   file inrdata from groupPeaksN1
@@ -96,8 +88,6 @@ file "group1.rdata" into rtCorrectIn
 
 process  retcorP{
 container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.52.0_cv0.8.70'
-memory '5 GB'
-cpus 1
 stageInMode 'copy'
 publishDir "${output}/rtcor", mode: 'copy'
 
@@ -119,8 +109,6 @@ file "corrected.rdata" into groupPeaksN2
 
 process  groupPeaks_2{
 container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.52.0_cv0.8.70'
-memory '5 GB'
-cpus 1
 stageInMode 'copy'
 publishDir "${output}/group2", mode: 'copy'
 
@@ -142,8 +130,6 @@ file "group2.rdata" into CameraAnnotatePeaksIn
 /*
 process  blankFilterP{
 container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.52.0_cv0.8.70'
-memory '5 GB'
-cpus 1
 stageInMode 'copy'
 publishDir "${output}/blankFilter", mode: 'copy'
 
@@ -165,8 +151,6 @@ file "blankFiltered.rdata" into dilutionFilter
 
 process  dilutionFilterP{
 container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.52.0_cv0.8.70'
-memory '5 GB'
-cpus 1
 stageInMode 'copy'
 publishDir "${output}/dilutionFilter", mode: 'copy'
 
@@ -193,8 +177,6 @@ Channel
 
 process  cvFilterP{
 container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.52.0_cv0.8.70'
-memory '5 GB'
-cpus 1
 stageInMode 'copy'
 publishDir "${output}/cvFilter", mode: 'copy'
 
@@ -218,8 +200,6 @@ file "cvFiltered.rdata" into CameraAnnotatePeaksIn
 */
 process  CameraAnnotatePeaks{
 container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
-memory '5 GB'
-cpus 1
 stageInMode 'copy'
 publishDir "${output}/CameraAnnotatePeaks", mode: 'copy'
 
@@ -241,8 +221,6 @@ file "CameraAnnotatePeaks.rdata" into CameraGroupIn
 
 process  CameraGroup{
 container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
-memory '8 GB'
-cpus 1
 stageInMode 'copy'
 publishDir "${output}/CameraGroup", mode: 'copy'
 
@@ -264,8 +242,6 @@ file "CameraGroup.rdata" into CameraFindAdductsIn
 
 process  CameraFindAdducts{
 container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
-memory '8 GB'
-cpus 1
 stageInMode 'copy'
 publishDir "${output}/CameraFindAdducts", mode: 'copy'
 
@@ -287,8 +263,6 @@ file "CameraFindAdducts.rdata" into CameraFindIsotopesIn
 
 process  CameraFindIsotopes{
 container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
-memory '8 GB'
-cpus 1
 stageInMode 'copy'
 publishDir "${output}/CameraFindIsotopes", mode: 'copy'
 
@@ -310,8 +284,6 @@ file "CameraFindIsotopes.rdata" into MapMsms2CameraInCam,Msms2MetFragInCam, fixN
 
 process  ReadMsms{
 container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:v2.2_cv0.7.54'
-memory '8 GB'
-cpus 2
 stageInMode 'copy'
 publishDir "${output}/ReadMsms", mode: 'copy'
 
@@ -332,8 +304,6 @@ file "${inrdata.baseName}.rdata" into MapMsms2CameraIn
 }
 
 process  MapMsms2Camera{
-memory '8 GB'
-cpus 1
 container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:v2.2_cv0.7.54'
 stageInMode 'copy'
 publishDir "${output}/MapMsms2Camera", mode: 'copy'
@@ -358,8 +328,6 @@ file "MapMsms2Camera.rdata" into Msms2MetFragIn
 
 process  Msms2MetFrag{
 container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:v2.2_cv0.7.54'
-memory '8 GB'
-cpus 1
 stageInMode 'copy'
 publishDir "${output}/Msms2MetFrag", mode: 'copy'
 
@@ -397,8 +365,6 @@ Channel
 
 process  removeMS2Dublicated{
 container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:v2.2_cv0.7.54'
-memory '1 GB'
-cpus 1
 stageInMode 'copy'
 publishDir "${output}/removeMS2Dublicated", mode: 'copy'
 
@@ -446,8 +412,6 @@ output="/home/jovyan/work/fibro/fibro/out"
 	
 process  XcmsFindPeaksLibrary{
 container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.52.0_cv0.8.70'
-memory '1 GB'
-cpus 1
 stageInMode 'copy'
 publishDir "${output}/findPeaksLibrary", mode: 'copy'
 
@@ -469,8 +433,6 @@ file "${mzMLFile.baseName}.rdata" into CameraAnnotatePeaksInLibrary
 
 process  CameraAnnotatePeaksLibrary{
 container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
-memory '1 GB'
-cpus 1
 stageInMode 'copy'
 publishDir "${output}/CameraAnnotatePeaksLibrary", mode: 'copy'
 
@@ -492,8 +454,6 @@ file "${inrdata.baseName}.rdata" into CameraGroupInLibrary
 
 process  CameraGroupLibrary{
 container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
-memory '2 GB'
-cpus 1
 stageInMode 'copy'
 publishDir "${output}/CameraGroupLibrary", mode: 'copy'
 
@@ -515,8 +475,6 @@ file "${inrdata.baseName}.rdata" into CameraFindAdductsInLibrary
 
 process  CameraFindAdductsLibrary{
 container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
-memory '2 GB'
-cpus 1
 stageInMode 'copy'
 publishDir "${output}/CameraFindAdductsLibrary", mode: 'copy'
 
@@ -538,8 +496,6 @@ file "${inrdata.baseName}.rdata" into CameraFindIsotopesInLibrary
 
 process  CameraFindIsotopesLibrary{
 container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
-memory '3 GB'
-cpus 1
 stageInMode 'copy'
 publishDir "${output}/CameraFindIsotopesLibrary", mode: 'copy'
 
@@ -561,8 +517,6 @@ file "${inrdata.baseName}.rdata" into MapMsms2CameraInCamLibrary,createLibCamLib
 
 process  ReadMsmsLibrary{
 container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:v2.2_cv0.7.54'
-memory '2 GB'
-cpus 1
 stageInMode 'copy'
 publishDir "${output}/ReadMsmsLibrary", mode: 'copy'
 
@@ -591,8 +545,6 @@ MapMsms2CameraInputsLibrary=ch1CalLibrary.join(ch2CalLibrary,by:0)
 
 process  MapMsms2CameraLibrary{
 container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:v2.2_cv0.7.54'
-memory '2 GB'
-cpus 1
 stageInMode 'copy'
 publishDir "${output}/MapMsms2CameraLibrary", mode: 'copy'
 
@@ -639,8 +591,6 @@ Channel
 	
 process  createLibraryP{
 container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:v2.2_cv0.7.54'
-memory '2 GB'
-cpus 1
 stageInMode 'copy'
 publishDir "${output}/createLibraryP", mode: 'copy'
 
@@ -678,8 +628,6 @@ Channel
 
 process  collectLibrary{
 container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:v2.2_cv0.7.54'
-memory '5 GB'
-cpus 1
 stageInMode 'copy'
 publishDir "${output}/collectLibrary", mode: 'copy'
 
@@ -715,8 +663,6 @@ Channel
 seachEngineParmF=seachEngineParm.flatten()	
 process  librarySearchEngine{
 container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:v2.2_cv0.7.54'
-memory '500 MB'
-cpus 1
 stageInMode 'copy'
 publishDir "${output}/librarySearchEngine", mode: 'copy'
 
@@ -744,11 +690,9 @@ file "${param.baseName}.csv" into AggregateMetFragIn
 
 process  AggregateMetFragLib{
 container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:v2.2_cv0.7.54'
-memory '5 GB'
-cpus 1
 stageInMode 'copy'
 publishDir "${output}/AggregateMetFrag", mode: 'copy'
-
+maxForks = 100
 
   input:
   file inrdata from AggregateMetFragIn.collect()
@@ -774,8 +718,6 @@ Channel
 	
 process  fixname{
 container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
-memory '8 GB'
-cpus 1
 stageInMode 'copy'
 publishDir "${output}/fixname", mode: 'copy'
 
@@ -805,8 +747,6 @@ Channel
 	
 process  PrepareOutPut{
 container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
-memory '8 GB'
-cpus 1
 stageInMode 'copy'
 publishDir "${output}/test", mode: 'copy'
 
@@ -831,8 +771,6 @@ file "*.txt" into plsdaIn
 
 process  plsda{
 container 'container-registry.phenomenal-h2020.eu/phnmnl/multivariate:v2.3.10_cv1.2.20'
-memory '8 GB'
-cpus 1
 stageInMode 'copy'
 publishDir "${output}/plsda", mode: 'copy'
 
@@ -862,7 +800,7 @@ process  Csifingerid{
 container 'container-registry.phenomenal-h2020.eu/phnmnl/csifingerid:dev_v4.0_cv4.0.2'
 stageInMode 'copy'
 publishDir "${output}/Csifingerid", mode: 'copy'
-
+maxForks = 100
 
   input:
   file inrdata from CsifingeridInF
@@ -885,7 +823,7 @@ process  AggregateMetFrag{
 container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:v2.2_cv0.7.54'
 stageInMode 'copy'
 publishDir "${output}/AggregateMetFrag", mode: 'copy'
-
+maxForks = 100
 
   input:
   file inrdata from AggregateMetFragIn.collect()
