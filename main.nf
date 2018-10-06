@@ -689,7 +689,6 @@ seachEngineParmF=seachEngineParm.flatten()
 process  librarySearchEngine{
 maxForks 30
 container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:v2.2_cv0.7.54'
-stageInMode 'copy'
 publishDir "${output}/librarySearchEngine", mode: 'copy'
 
   input:
