@@ -23,8 +23,8 @@ output="/home/jovyan/work/fibro/fibro/outNoFilter"
 process  XcmsFindPeaks{
 maxForks 5
 container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.52.0_cv0.8.70'
-stageInMode 'copy'
-publishDir "${output}/findPeaks", mode: 'copy'
+////stageInMode 'copy'
+//publishDir "${output}/findPeaks", mode: 'copy'
 
   input:
   file mzMLFile from mzMLFilesMS1
@@ -45,8 +45,8 @@ file "${mzMLFile.baseName}.rdata" into collectFiles, test5
 process  collectXCMS{
 maxForks 5
 container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.52.0_cv0.8.70'
-stageInMode 'copy'
-publishDir "${output}/collected", mode: 'copy'
+////stageInMode 'copy'
+//publishDir "${output}/collected", mode: 'copy'
 
   input:
   file mzMLFile from collectFiles.collect()
@@ -69,8 +69,8 @@ script:
 process  groupPeaks_1{
 maxForks 5
 container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.52.0_cv0.8.70'
-stageInMode 'copy'
-publishDir "${output}/group1", mode: 'copy'
+////stageInMode 'copy'
+//publishDir "${output}/group1", mode: 'copy'
 
   input:
   file inrdata from groupPeaksN1
@@ -92,8 +92,8 @@ file "group1.rdata" into rtCorrectIn
 process  retcorP{
 maxForks 5
 container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.52.0_cv0.8.70'
-stageInMode 'copy'
-publishDir "${output}/rtcor", mode: 'copy'
+////stageInMode 'copy'
+//publishDir "${output}/rtcor", mode: 'copy'
 
   input:
   file inrdata from rtCorrectIn
@@ -114,8 +114,8 @@ file "corrected.rdata" into groupPeaksN2
 process  groupPeaks_2{
 maxForks 5
 container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.52.0_cv0.8.70'
-stageInMode 'copy'
-publishDir "${output}/group2", mode: 'copy'
+////stageInMode 'copy'
+//publishDir "${output}/group2", mode: 'copy'
 
   input:
   file inrdata from groupPeaksN2
@@ -136,8 +136,8 @@ file "group2.rdata" into CameraAnnotatePeaksIn
 process  blankFilterP{
 maxForks 5
 container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.52.0_cv0.8.70'
-stageInMode 'copy'
-publishDir "${output}/blankFilter", mode: 'copy'
+//stageInMode 'copy'
+//publishDir "${output}/blankFilter", mode: 'copy'
 
   input:
   file inrdata from blankFilter
@@ -158,8 +158,8 @@ file "blankFiltered.rdata" into dilutionFilter
 process  dilutionFilterP{
 maxForks 5
 container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.52.0_cv0.8.70'
-stageInMode 'copy'
-publishDir "${output}/dilutionFilter", mode: 'copy'
+//stageInMode 'copy'
+//publishDir "${output}/dilutionFilter", mode: 'copy'
 
   input:
   file inrdata from dilutionFilter
@@ -185,8 +185,8 @@ Channel
 process  cvFilterP{
 maxForks 5
 container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.52.0_cv0.8.70'
-stageInMode 'copy'
-publishDir "${output}/cvFilter", mode: 'copy'
+//stageInMode 'copy'
+//publishDir "${output}/cvFilter", mode: 'copy'
 
   input:
   file inrdata from cvFilter
@@ -209,8 +209,8 @@ file "cvFiltered.rdata" into CameraAnnotatePeaksIn
 process  CameraAnnotatePeaks{
 maxForks 5
 container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
-stageInMode 'copy'
-publishDir "${output}/CameraAnnotatePeaks", mode: 'copy'
+//stageInMode 'copy'
+//publishDir "${output}/CameraAnnotatePeaks", mode: 'copy'
 
   input:
   file inrdata from CameraAnnotatePeaksIn
@@ -231,8 +231,8 @@ file "CameraAnnotatePeaks.rdata" into CameraGroupIn
 process  CameraGroup{
 maxForks 5
 container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
-stageInMode 'copy'
-publishDir "${output}/CameraGroup", mode: 'copy'
+//stageInMode 'copy'
+//publishDir "${output}/CameraGroup", mode: 'copy'
 
   input:
   file inrdata from CameraGroupIn
@@ -253,8 +253,8 @@ file "CameraGroup.rdata" into CameraFindAdductsIn
 process  CameraFindAdducts{
 maxForks 5
 container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
-stageInMode 'copy'
-publishDir "${output}/CameraFindAdducts", mode: 'copy'
+//stageInMode 'copy'
+//publishDir "${output}/CameraFindAdducts", mode: 'copy'
 
   input:
   file inrdata from CameraFindAdductsIn
@@ -275,8 +275,8 @@ file "CameraFindAdducts.rdata" into CameraFindIsotopesIn
 process  CameraFindIsotopes{
 maxForks 5
 container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
-stageInMode 'copy'
-publishDir "${output}/CameraFindIsotopes", mode: 'copy'
+//stageInMode 'copy'
+//publishDir "${output}/CameraFindIsotopes", mode: 'copy'
 
   input:
   file inrdata from CameraFindIsotopesIn
@@ -297,8 +297,8 @@ file "CameraFindIsotopes.rdata" into MapMsms2CameraInCam,Msms2MetFragInCam, fixN
 process  ReadMsms{
 maxForks 5
 container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:v2.2_cv0.7.54'
-stageInMode 'copy'
-publishDir "${output}/ReadMsms", mode: 'copy'
+//stageInMode 'copy'
+//publishDir "${output}/ReadMsms", mode: 'copy'
 
   input:
   file inrdata from mzMLFilesMS2
@@ -319,8 +319,8 @@ file "${inrdata.baseName}.rdata" into MapMsms2CameraIn
 process  MapMsms2Camera{
 maxForks 5
 container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:v2.2_cv0.7.54'
-stageInMode 'copy'
-publishDir "${output}/MapMsms2Camera", mode: 'copy'
+//stageInMode 'copy'
+//publishDir "${output}/MapMsms2Camera", mode: 'copy'
 
   input:
   file inrdata from MapMsms2CameraIn.collect()
@@ -343,8 +343,8 @@ file "MapMsms2Camera.rdata" into Msms2MetFragIn
 process  Msms2MetFrag{
 maxForks 5
 container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:v2.2_cv0.7.54'
-stageInMode 'copy'
-publishDir "${output}/Msms2MetFrag", mode: 'copy'
+//stageInMode 'copy'
+//publishDir "${output}/Msms2MetFrag", mode: 'copy'
 
   input:
   file inrdata from Msms2MetFragIn
@@ -381,8 +381,8 @@ Channel
 process  removeMS2Dublicated{
 maxForks 5
 container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:v2.2_cv0.7.54'
-stageInMode 'copy'
-publishDir "${output}/removeMS2Dublicated", mode: 'copy'
+//stageInMode 'copy'
+//publishDir "${output}/removeMS2Dublicated", mode: 'copy'
 
   input:
   file inrdata from removeMS2DublicatedInZip
@@ -429,8 +429,8 @@ output="/home/jovyan/work/fibro/fibro/out"
 process  XcmsFindPeaksLibrary{
 maxForks 5
 container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.52.0_cv0.8.70'
-stageInMode 'copy'
-publishDir "${output}/findPeaksLibrary", mode: 'copy'
+//stageInMode 'copy'
+//publishDir "${output}/findPeaksLibrary", mode: 'copy'
 
   input:
   file mzMLFile from mzMLFilesMS1Library
@@ -451,8 +451,8 @@ file "${mzMLFile.baseName}.rdata" into CameraAnnotatePeaksInLibrary
 process  CameraAnnotatePeaksLibrary{
 maxForks 5
 container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
-stageInMode 'copy'
-publishDir "${output}/CameraAnnotatePeaksLibrary", mode: 'copy'
+//stageInMode 'copy'
+//publishDir "${output}/CameraAnnotatePeaksLibrary", mode: 'copy'
 
   input:
   file inrdata from CameraAnnotatePeaksInLibrary
@@ -473,8 +473,8 @@ file "${inrdata.baseName}.rdata" into CameraGroupInLibrary
 process  CameraGroupLibrary{
 maxForks 5
 container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
-stageInMode 'copy'
-publishDir "${output}/CameraGroupLibrary", mode: 'copy'
+//stageInMode 'copy'
+//publishDir "${output}/CameraGroupLibrary", mode: 'copy'
 
   input:
   file inrdata from CameraGroupInLibrary
@@ -495,8 +495,8 @@ file "${inrdata.baseName}.rdata" into CameraFindAdductsInLibrary
 process  CameraFindAdductsLibrary{
 maxForks 5
 container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
-stageInMode 'copy'
-publishDir "${output}/CameraFindAdductsLibrary", mode: 'copy'
+//stageInMode 'copy'
+//publishDir "${output}/CameraFindAdductsLibrary", mode: 'copy'
 
   input:
   file inrdata from CameraFindAdductsInLibrary
@@ -517,8 +517,8 @@ file "${inrdata.baseName}.rdata" into CameraFindIsotopesInLibrary
 process  CameraFindIsotopesLibrary{
 maxForks 5
 container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
-stageInMode 'copy'
-publishDir "${output}/CameraFindIsotopesLibrary", mode: 'copy'
+//stageInMode 'copy'
+//publishDir "${output}/CameraFindIsotopesLibrary", mode: 'copy'
 
   input:
   file inrdata from CameraFindIsotopesInLibrary
@@ -539,8 +539,8 @@ file "${inrdata.baseName}.rdata" into MapMsms2CameraInCamLibrary,createLibCamLib
 process  ReadMsmsLibrary{
 maxForks 5
 container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:v2.2_cv0.7.54'
-stageInMode 'copy'
-publishDir "${output}/ReadMsmsLibrary", mode: 'copy'
+//stageInMode 'copy'
+//publishDir "${output}/ReadMsmsLibrary", mode: 'copy'
 
   input:
   file inrdata from mzMLFilesMS2Library
@@ -568,8 +568,8 @@ MapMsms2CameraInputsLibrary=ch1CalLibrary.join(ch2CalLibrary,by:0)
 process  MapMsms2CameraLibrary{
 maxForks 5
 container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:v2.2_cv0.7.54'
-stageInMode 'copy'
-publishDir "${output}/MapMsms2CameraLibrary", mode: 'copy'
+//stageInMode 'copy'
+//publishDir "${output}/MapMsms2CameraLibrary", mode: 'copy'
 
   input:
 set val(name), file(incam), file(inrdata) from MapMsms2CameraInputsLibrary
@@ -615,8 +615,8 @@ Channel
 process  createLibraryP{
 maxForks 5
 container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:v2.2_cv0.7.54'
-stageInMode 'copy'
-publishDir "${output}/createLibraryP", mode: 'copy'
+//stageInMode 'copy'
+//publishDir "${output}/createLibraryP", mode: 'copy'
 
   input:
 set val(name), file(incam), file(inrdata) from CreateLibInputsLibrary
@@ -653,8 +653,8 @@ Channel
 process  collectLibrary{
 maxForks 5
 container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:v2.2_cv0.7.54'
-stageInMode 'copy'
-publishDir "${output}/collectLibrary", mode: 'copy'
+//stageInMode 'copy'
+//publishDir "${output}/collectLibrary", mode: 'copy'
 
   input:
 file inrdata from collectLibraryIn.collect()
@@ -689,7 +689,7 @@ seachEngineParmF=seachEngineParm.flatten()
 process  librarySearchEngine{
 maxForks 30
 container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:v2.2_cv0.7.54'
-publishDir "${output}/librarySearchEngine", mode: 'copy'
+//publishDir "${output}/librarySearchEngine", mode: 'copy'
 
   input:
   file param from seachEngineParmF
@@ -716,7 +716,7 @@ file "${param.baseName}.csv" into AggregateMetFragIn
 process  AggregateMetFragLib{
 maxForks 5
 container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:v2.2_cv0.7.54'
-stageInMode 'copy'
+//stageInMode 'copy'
 publishDir "${output}/AggregateMetFrag", mode: 'copy'
 maxForks = 100
 
@@ -745,7 +745,7 @@ Channel
 process  fixname{
 maxForks 5
 container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
-stageInMode 'copy'
+//stageInMode 'copy'
 publishDir "${output}/fixname", mode: 'copy'
 
   input:
@@ -775,7 +775,7 @@ Channel
 process  PrepareOutPut{
 maxForks 5
 container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
-stageInMode 'copy'
+//stageInMode 'copy'
 publishDir "${output}/test", mode: 'copy'
 
   input:
@@ -800,7 +800,7 @@ file "*.txt" into plsdaIn
 process  plsda{
 maxForks 5
 container 'container-registry.phenomenal-h2020.eu/phnmnl/multivariate:v2.3.10_cv1.2.20'
-stageInMode 'copy'
+//stageInMode 'copy'
 publishDir "${output}/plsda", mode: 'copy'
 
   input:
@@ -828,8 +828,8 @@ CsifingeridInF=CsifingeridIn.flatten()
 process  Csifingerid{
 maxForks 5
 container 'container-registry.phenomenal-h2020.eu/phnmnl/csifingerid:dev_v4.0_cv4.0.2'
-stageInMode 'copy'
-publishDir "${output}/Csifingerid", mode: 'copy'
+//stageInMode 'copy'
+//publishDir "${output}/Csifingerid", mode: 'copy'
 maxForks = 100
 
   input:
@@ -852,8 +852,8 @@ maxForks = 100
 process  AggregateMetFrag{
 maxForks 5
 container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:v2.2_cv0.7.54'
-stageInMode 'copy'
-publishDir "${output}/AggregateMetFrag", mode: 'copy'
+//stageInMode 'copy'
+//publishDir "${output}/AggregateMetFrag", mode: 'copy'
 maxForks = 100
 
   input:
@@ -885,8 +885,8 @@ Channel
 process  fixname{
 maxForks 5
 container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
-stageInMode 'copy'
-publishDir "${output}/fixname", mode: 'copy'
+//stageInMode 'copy'
+//publishDir "${output}/fixname", mode: 'copy'
 
   input:
   file camInput from prepareOutPutSIn
@@ -915,8 +915,8 @@ Channel
 process  PrepareOutPut{
 maxForks 5
 container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
-stageInMode 'copy'
-publishDir "${output}/test", mode: 'copy'
+//stageInMode 'copy'
+//publishDir "${output}/test", mode: 'copy'
 
   input:
   file phenoIn from phenoPosIn2
@@ -938,8 +938,8 @@ file "*.txt" into plsdaIn
 process  plsda{
 maxForks 5
 container 'container-registry.phenomenal-h2020.eu/phnmnl/multivariate:v2.3.10_cv1.2.20'
-stageInMode 'copy'
-publishDir "${output}/plsda", mode: 'copy'
+//stageInMode 'copy'
+//publishDir "${output}/plsda", mode: 'copy'
 
   input:
   file phenoIn from plsdaIn.collect()
