@@ -802,8 +802,7 @@ Channel
 
 	
 process  PrepareOutPut{
-memory '16 GB'
-cpus 8
+memory '15 GB'
 
 container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
 
