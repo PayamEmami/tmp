@@ -767,21 +767,51 @@ file "${camInput}" into PrepareOutPutInCam
 }
 
 Channel
+    .fromPath( "/home/jovyan/work/fibro/fibro/fixlib.r" )
+    .ifEmpty { error "Cannot find any files in the folder" }
+    .set { extraRfileLib }//input_set is the output
+	
+	
+process  fixnameLib{
+maxForks 1
+container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
+//stageInMode 'copy'
+publishDir "${output}/fixname", mode: 'copy'
+
+  input:
+  file camInput from prepareOutPutSIn
+   file rfile from extraRfileLib
+output:
+file "ids.csv" into prepareOutPutSInFixed
+  shell:
+    '''
+	cp !{rfile} /usr/local/bin/fixlib.r
+	chmod +x /usr/local/bin/fixlib.r
+	
+	nextFlowDIR=$PWD
+	cd $HOME
+	cp $nextFlowDIR/* $HOME/
+	/usr/local/bin/fixlib.r input=!{camInput} output=ids.csv
+    cp $HOME/ids.csv $nextFlowDIR/ids.csv
+	'''
+}
+
+Channel
     .fromPath( "/home/jovyan/work/fibro/fibro/posphenoFixed.csv" )
     .ifEmpty { error "Cannot find any files in the folder" }
     .set { phenoPosIn2 }//input_set is the output
 
 	
 process  PrepareOutPut{
-maxForks 5
+maxForks 1
 container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
-stageInMode 'copy'
+
 publishDir "${output}/test", mode: 'copy'
 
   input:
   file phenoIn from phenoPosIn2
   file camInput from PrepareOutPutInCam
-  file sIn from prepareOutPutSIn
+  file sIn from prepareOutPutSInFixed
 output:
 file "*.txt" into plsdaIn
   shell:
@@ -790,10 +820,7 @@ file "*.txt" into plsdaIn
 	cd $HOME
 	cp $nextFlowDIR/* $HOME/
 	
-	R -e 'x<-read.csv("!{sIn}",header=T);write.table(x,"ids.csv",quote=F,sep="\\t")'
-	R -e 'list.files()'
-	
-	/usr/local/bin/prepareOutput.r inputcamera=!{camInput} inputscores=ids.csv inputpheno=!{phenoIn} ppm=15 rt=20 higherTheBetter=true scoreColumn=Scoredotproduct impute=false typeColumn=Class selectedType=Sample rename=true renameCol=rename onlyReportWithID=false combineReplicate=true combineReplicateColumn=rep log=true sampleCoverage=50 sampleCoverageMethod=Groups outputPeakTable=peaktable.txt outputVariables=vars.txt outputMetaData=metadata.txt
+	/usr/local/bin/prepareOutput.r inputcamera=!{camInput} inputscores=!{prepareOutPutSInFixed} inputpheno=!{phenoIn} ppm=15 rt=20 higherTheBetter=true scoreColumn=Scoredotproduct impute=false typeColumn=Class selectedType=Sample rename=true renameCol=rename onlyReportWithID=false combineReplicate=true combineReplicateColumn=rep log=true sampleCoverage=50 sampleCoverageMethod=Groups outputPeakTable=peaktable.txt outputVariables=vars.txt outputMetaData=metadata.txt
 	
     cp $HOME/* $nextFlowDIR/
 	'''
