@@ -819,7 +819,7 @@ file "*.txt" into plsdaIn
 	cd $HOME
 	cp $nextFlowDIR/* $HOME/
 	
-	/usr/local/bin/prepareOutput.r inputcamera=!{camInput} inputscores=!{prepareOutPutSInFixed} inputpheno=!{phenoIn} ppm=15 rt=20 higherTheBetter=true scoreColumn=Scoredotproduct impute=false typeColumn=Class selectedType=Sample rename=true renameCol=rename onlyReportWithID=false combineReplicate=true combineReplicateColumn=rep log=true sampleCoverage=50 sampleCoverageMethod=Groups outputPeakTable=peaktable.txt outputVariables=vars.txt outputMetaData=metadata.txt
+	/usr/local/bin/prepareOutput.r inputcamera=!{camInput} inputscores=!{sIn} inputpheno=!{phenoIn} ppm=15 rt=20 higherTheBetter=true scoreColumn=Scoredotproduct impute=false typeColumn=Class selectedType=Sample rename=true renameCol=rename onlyReportWithID=false combineReplicate=true combineReplicateColumn=rep log=true sampleCoverage=50 sampleCoverageMethod=Groups outputPeakTable=peaktable.txt outputVariables=vars.txt outputMetaData=metadata.txt
 	
     cp $HOME/* $nextFlowDIR/
 	'''
