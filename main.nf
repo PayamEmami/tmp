@@ -775,7 +775,7 @@ Channel
 process  PrepareOutPut{
 maxForks 5
 container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
-//stageInMode 'copy'
+stageInMode 'copy'
 publishDir "${output}/test", mode: 'copy'
 
   input:
@@ -791,7 +791,10 @@ file "*.txt" into plsdaIn
 	cp $nextFlowDIR/* $HOME/
 	
 	R -e 'x<-read.csv("!{sIn}",header=T);write.table(x,"ids.csv",quote=F,sep="\\t")'
+	R -e 'list.files()'
+	
 	/usr/local/bin/prepareOutput.r inputcamera=!{camInput} inputscores=ids.csv inputpheno=!{phenoIn} ppm=15 rt=20 higherTheBetter=true scoreColumn=Scoredotproduct impute=false typeColumn=Class selectedType=Sample rename=true renameCol=rename onlyReportWithID=false combineReplicate=true combineReplicateColumn=rep log=true sampleCoverage=50 sampleCoverageMethod=Groups outputPeakTable=peaktable.txt outputVariables=vars.txt outputMetaData=metadata.txt
+	
     cp $HOME/* $nextFlowDIR/
 	'''
 }
