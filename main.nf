@@ -802,8 +802,11 @@ Channel
 
 	
 process  PrepareOutPut{
-memory '15 GB'
+memory { 15.GB * task.attempt }
+    time { 1.hour * task.attempt }
 
+    errorStrategy { task.exitStatus == 140 ? 'retry' : 'terminate' }
+    maxRetries 3
 container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
 
 publishDir "${output}/test", mode: 'copy'
