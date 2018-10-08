@@ -795,7 +795,6 @@ file "ids.csv" into prepareOutPutSInFixed
     cp $HOME/ids.csv $nextFlowDIR/ids.csv
 	'''
 }
-
 Channel
     .fromPath( "/home/jovyan/work/fibro/fibro/posphenoFixed.csv" )
     .ifEmpty { error "Cannot find any files in the folder" }
@@ -825,6 +824,8 @@ file "*.txt" into plsdaIn
     cp $HOME/* $nextFlowDIR/
 	'''
 }
+
+
 
 
 process  plsda{
