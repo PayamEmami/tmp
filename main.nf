@@ -800,7 +800,11 @@ Channel
     .ifEmpty { error "Cannot find any files in the folder" }
     .set { phenoPosIn2 }//input_set is the output
 
-	
+Channel
+    .fromPath( "/home/jovyan/work/fibro/fibro/prepareOutput.r" )
+    .ifEmpty { error "Cannot find any files in the folder" }
+    .set { prepareOutputFixedFile }//input_set is the output
+    
 process  PrepareOutPut{
 memory { 15.GB * task.attempt }
     time { 1.hour * task.attempt }
@@ -815,15 +819,19 @@ publishDir "${output}/test", mode: 'copy'
   file phenoIn from phenoPosIn2
   file camInput from PrepareOutPutInCam
   file sIn from prepareOutPutSInFixed
+  file rfile from prepareOutputFixedFile
 output:
 file "*.txt" into plsdaIn
   shell:
     '''
+    cp !{rfile} /usr/local/bin/prepareOutputFixed.r
+	chmod +x /usr/local/bin/prepareOutputFixed.r
+	
 	nextFlowDIR=$PWD
 	cd $HOME
 	cp $nextFlowDIR/* $HOME/
 	
-	/usr/local/bin/prepareOutput.r inputcamera=!{camInput} inputscores=!{sIn} inputpheno=!{phenoIn} ppm=15 rt=20 higherTheBetter=true scoreColumn=Scoredotproduct impute=false typeColumn=Class selectedType=Sample rename=true renameCol=rename onlyReportWithID=false combineReplicate=true combineReplicateColumn=rep log=true sampleCoverage=50 sampleCoverageMethod=Groups outputPeakTable=peaktable.txt outputVariables=vars.txt outputMetaData=metadata.txt
+	/usr/local/bin/prepareOutputFixed.r inputcamera=!{camInput} inputscores=!{sIn} inputpheno=!{phenoIn} ppm=15 rt=20 higherTheBetter=true scoreColumn=Scoredotproduct impute=false typeColumn=Class selectedType=Sample rename=true renameCol=rename onlyReportWithID=false combineReplicate=true combineReplicateColumn=rep log=true sampleCoverage=50 sampleCoverageMethod=Groups outputPeakTable=peaktable.txt outputVariables=vars.txt outputMetaData=metadata.txt
 	
     cp $HOME/* $nextFlowDIR/
 	'''
