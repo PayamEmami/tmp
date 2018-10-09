@@ -806,6 +806,7 @@ Channel
     .set { prepareOutputFixedFile }//input_set is the output
     
 process  PrepareOutPut{
+cpus 8
 memory { 15.GB * task.attempt }
     time { 1.hour * task.attempt }
 
@@ -831,7 +832,7 @@ file "*.txt" into plsdaIn
 	cd $HOME
 	cp $nextFlowDIR/* $HOME/
 	
-	/usr/local/bin/prepareOutputFixed.r inputcamera=!{camInput} inputscores=!{sIn} inputpheno=!{phenoIn} ppm=15 rt=20 higherTheBetter=true scoreColumn=Scoredotproduct impute=false typeColumn=Class selectedType=Sample rename=true renameCol=rename onlyReportWithID=false combineReplicate=true combineReplicateColumn=rep log=true sampleCoverage=50 sampleCoverageMethod=Groups outputPeakTable=peaktable.txt outputVariables=vars.txt outputMetaData=metadata.txt
+	/usr/local/bin/prepareOutputFixed.r inputcamera=!{camInput} inputscores=!{sIn} inputpheno=!{phenoIn} ppm=15 rt=20 higherTheBetter=true scoreColumn=Scoredotproduct impute=false typeColumn=Class selectedType=Sample rename=true renameCol=rename onlyReportWithID=false combineReplicate=true combineReplicateColumn=rep log=true sampleCoverage=50 sampleCoverageMethod=Groups outputPeakTable=peaktable.txt outputVariables=vars.txt outputMetaData=metadata.txt ncore=7 Ifnormalize=1
 	
     cp $HOME/* $nextFlowDIR/
 	'''
