@@ -14,14 +14,30 @@ Channel
 Channel
     .fromPath( "/home/jovyan/work/fibro/fibro/metaboRawFiles/pospheno.csv" )
     .ifEmpty { error "Cannot find any files in the folder" }
-    .set { phenoPosIn }//input_set is the output
+    .into { phenoPosIn;phenoPosIn2 }//input_set is the output
 
+
+Channel
+    .fromPath( "/home/jovyan/work/fibro/fibro/libraryFiles/POS/*.mzML" )
+    .ifEmpty { error "Cannot find any files in the folder" }
+    .set { mzMLFilesMS1Library }//input_set is the output
+
+	Channel
+    .fromPath( "/home/jovyan/work/fibro/fibro/libraryFiles/POS/*.mzML" )
+    .ifEmpty { error "Cannot find any files in the folder" }
+    .set { mzMLFilesMS2Library }//input_set is the output
 	
+	
+Channel
+    .fromPath( "/home/jovyan/work/fibro/fibro/libPos.csv" )
+    .ifEmpty { error "Cannot find any files in the folder" }
+    .set { libraryInfo }//input_set is the output
+		
 output="/home/jovyan/work/fibro/fibro/outNoFilter"
 
 	
 process  XcmsFindPeaks{
-maxForks 5
+maxForks 10
 container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.52.0_cv0.8.70'
 ////stageInMode 'copy'
 //publishDir "${output}/findPeaks", mode: 'copy'
@@ -44,7 +60,7 @@ file "${mzMLFile.baseName}.rdata" into collectFiles, test5
 
 process  collectXCMS{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.52.0_cv0.8.70'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.53.1_cv0.1.80'
 ////stageInMode 'copy'
 //publishDir "${output}/collected", mode: 'copy'
 
@@ -177,11 +193,6 @@ file "dilutionFiltered.rdata" into cvFilter
 	'''
 }
 
-Channel
-    .fromPath( "/home/jovyan/work/fibro/fibro/cvfilter.r" )
-    .ifEmpty { error "Cannot find any files in the folder" }
-    .set { extraCVfile }//input_set is the output
-
 process  cvFilterP{
 maxForks 5
 container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.52.0_cv0.8.70'
@@ -190,14 +201,11 @@ container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.52.0_cv0.8.
 
   input:
   file inrdata from cvFilter
-  each file(cvfile) from extraCVfile
 output:
 file "cvFiltered.rdata" into CameraAnnotatePeaksIn
 
   shell:
     '''
-	cp !{cvfile} /usr/local/bin/cvfilter.r
-	chmod +x /usr/local/bin/cvfilter.r
 	nextFlowDIR=$PWD
 	cd $HOME
 	cp $nextFlowDIR/* $HOME/
@@ -282,7 +290,7 @@ container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.5
   file inrdata from CameraFindIsotopesIn
 
 output:
-file "CameraFindIsotopes.rdata" into MapMsms2CameraInCam,Msms2MetFragInCam, fixNameIn
+file "CameraFindIsotopes.rdata" into MapMsms2CameraInCam,Msms2MetFragInCam, PrepareOutPutInCam
 
   shell:
     '''
@@ -295,8 +303,8 @@ file "CameraFindIsotopes.rdata" into MapMsms2CameraInCam,Msms2MetFragInCam, fixN
 }
 
 process  ReadMsms{
-maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:v2.2_cv0.7.54'
+maxForks 10
+container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:dev_v2.2_cv1.0.65'
 //stageInMode 'copy'
 //publishDir "${output}/ReadMsms", mode: 'copy'
 
@@ -318,7 +326,7 @@ file "${inrdata.baseName}.rdata" into MapMsms2CameraIn
 
 process  MapMsms2Camera{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:v2.2_cv0.7.54'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:dev_v2.2_cv1.0.65'
 //stageInMode 'copy'
 //publishDir "${output}/MapMsms2Camera", mode: 'copy'
 
@@ -342,7 +350,7 @@ file "MapMsms2Camera.rdata" into Msms2MetFragIn
 
 process  Msms2MetFrag{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:v2.2_cv0.7.54'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:dev_v2.2_cv1.0.65'
 //stageInMode 'copy'
 //publishDir "${output}/Msms2MetFrag", mode: 'copy'
 
@@ -351,7 +359,7 @@ container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:v2.2_cv0.7.54'
   file incam from Msms2MetFragInCam
 
 output:
-file "*.txt" into CsifingeridIn, removeMS2DublicatedIn
+file "*.txt" into CsifingeridIn, seachEngineParm
 file "res.zip" into removeMS2DublicatedInZip
 
   shell:
@@ -360,70 +368,14 @@ file "res.zip" into removeMS2DublicatedInZip
 	cd $HOME
 	cp $nextFlowDIR/* $HOME/
 	mkdir $HOME/out
-	/usr/local/bin/MS2ToMetFrag.r inputCAMERA=!{incam} inputMS2=!{inrdata} output=$HOME/out precursorppm=15 fragmentppm=30 fragmentabs=0.07 database=LocalCSV mode=pos adductRules=primary minPeaks=2
+	/usr/local/bin/MS2ToMetFrag.r inputCAMERA=!{incam} inputMS2=!{inrdata} output=$HOME/out precursorppm=15 fragmentppm=30 fragmentabs=0.07 database=LocalCSV mode=pos adductRules=primary minPeaks=2 removeDup=T
     zip -r res.zip $HOME/out/
 	cp $HOME/res.zip $nextFlowDIR/res.zip
 	cd $nextFlowDIR
 	unzip -j res.zip
 	'''
 }
-//cp $HOME/out/* $nextFlowDIR/
 
-Channel
-    .fromPath( "/home/jovyan/work/fibro/fibro/removeDub.R" )
-    .ifEmpty { error "Cannot find any files in the folder" }
-    .set { removeDubFile }//input_set is the output
-	
-//removeMS2DublicatedInF=removeMS2DublicatedIn.flatten()
-	
-//removeMS2DublicatedInF.into{removeMS2DublicatedInF2;removeMS2DublicatedInF1}
-
-process  removeMS2Dublicated{
-maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:v2.2_cv0.7.54'
-//stageInMode 'copy'
-//publishDir "${output}/removeMS2Dublicated", mode: 'copy'
-
-  input:
-  file inrdata from removeMS2DublicatedInZip
-  each file(extraFile) from removeDubFile
-
-output:
-file "*.txt" into seachEngineParm
-
-  script:
-   
-    """
-	cp ${extraFile} /usr/local/bin/${extraFile}
-	chmod +x /usr/local/bin/${extraFile}
-	nextFlowDIR=\$PWD
-	cd \$HOME
-	cp \$nextFlowDIR/* \$HOME/
-	unzip -j ${inrdata}
-	/usr/local/bin/removeDub.R
-	for i in *; do cp "\$i" \$nextFlowDIR/; done
-    
-	"""
-}
-//cp \$HOME/* \$nextFlowDIR/
-// def input_args = inrdata.collect{ "$it" }.join(",")
-
-
-
-Channel
-    .fromPath( "/home/jovyan/work/fibro/fibro/libraryFiles/POS/*.mzML" )
-    .ifEmpty { error "Cannot find any files in the folder" }
-    .set { mzMLFilesMS1Library }//input_set is the output
-
-	Channel
-    .fromPath( "/home/jovyan/work/fibro/fibro/libraryFiles/POS/*.mzML" )
-    .ifEmpty { error "Cannot find any files in the folder" }
-    .set { mzMLFilesMS2Library }//input_set is the output
-	
-
-
-	
-output="/home/jovyan/work/fibro/fibro/out"
 
 	
 process  XcmsFindPeaksLibrary{
@@ -538,7 +490,7 @@ file "${inrdata.baseName}.rdata" into MapMsms2CameraInCamLibrary,createLibCamLib
 
 process  ReadMsmsLibrary{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:v2.2_cv0.7.54'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:dev_v2.2_cv1.0.65'
 //stageInMode 'copy'
 //publishDir "${output}/ReadMsmsLibrary", mode: 'copy'
 
@@ -563,11 +515,9 @@ MapMsms2CameraInLibrary.map { file -> tuple(file.baseName.replaceAll(/_ReadMsmsL
 
 MapMsms2CameraInputsLibrary=ch1CalLibrary.join(ch2CalLibrary,by:0)
 
-
-
 process  MapMsms2CameraLibrary{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:v2.2_cv0.7.54'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:dev_v2.2_cv1.0.65'
 //stageInMode 'copy'
 //publishDir "${output}/MapMsms2CameraLibrary", mode: 'copy'
 
@@ -594,34 +544,17 @@ createInLibrary.map { file -> tuple(file.baseName.replaceAll(/_MapMsms2CameraLib
 
 CreateLibInputsLibrary=ch1CreateLibrary.join(ch2CreateLibrary,by:0)
 
-Channel
-    .fromPath( "/home/jovyan/work/fibro/fibro/createLibraryFun.r" )
-    .ifEmpty { error "Cannot find any files in the folder" }
-    .set { extralibFun }//input_set is the output
-Channel
-    .fromPath( "/home/jovyan/work/fibro/fibro/createLibrary.R" )
-    .ifEmpty { error "Cannot find any files in the folder" }
-    .set { extralibMain }//input_set is the output
 
-	
-Channel
-    .fromPath( "/home/jovyan/work/fibro/fibro/libPos.csv" )
-    .ifEmpty { error "Cannot find any files in the folder" }
-    .set { libraryInfo }//input_set is the output
-	
-	
 	
 	
 process  createLibraryP{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:v2.2_cv0.7.54'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:dev_v2.2_cv1.0.65'
 //stageInMode 'copy'
 //publishDir "${output}/createLibraryP", mode: 'copy'
 
   input:
 set val(name), file(incam), file(inrdata) from CreateLibInputsLibrary
-each file(functionR) from extralibFun
-each file(mainR) from extralibMain
 each file(libraryin) from libraryInfo
 
 output:
@@ -629,12 +562,6 @@ file "${incam.baseName}.csv" into collectLibraryIn
 
   shell:
     '''
-	cp !{functionR} /usr/local/bin/!{functionR}
-	chmod +x /usr/local/bin/!{functionR}
-	
-	cp !{mainR} /usr/local/bin/createLibrary.r
-	chmod +x /usr/local/bin/createLibrary.r
-	
 	nextFlowDIR=$PWD
 	cd $HOME
 	cp $nextFlowDIR/* $HOME/
@@ -645,20 +572,14 @@ file "${incam.baseName}.csv" into collectLibraryIn
 	'''
 }
 
-Channel
-    .fromPath( "/home/jovyan/work/fibro/fibro/collectLibrary.R" )
-    .ifEmpty { error "Cannot find any files in the folder" }
-    .set { collectFile }//input_set is the output
-
 process  collectLibrary{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:v2.2_cv0.7.54'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:dev_v2.2_cv1.0.65'
 //stageInMode 'copy'
 //publishDir "${output}/collectLibrary", mode: 'copy'
 
   input:
 file inrdata from collectLibraryIn.collect()
-each file(extraFile) from collectFile
 
 output:
 file "library.csv" into searchEngineLib
@@ -667,33 +588,23 @@ file "library.csv" into searchEngineLib
   def input_args = inrdata.collect{ "$it" }.join(",")
   
     """
-	cp ${extraFile} /usr/local/bin/${extraFile}
-	chmod +x /usr/local/bin/${extraFile}
-	
 	nextFlowDIR=\$PWD
 	cd \$HOME
 	cp \$nextFlowDIR/* \$HOME/
-	/usr/local/bin/collectLibrary.R inputs=$input_args realNames=$input_args output=library.csv
+	/usr/local/bin/collectLibrary.r inputs=$input_args realNames=$input_args output=library.csv
     cp \$HOME/library.csv \$nextFlowDIR/library.csv
 	"""
 }
 
-
-
-Channel
-    .fromPath( "/home/jovyan/work/fibro/fibro/librarySearchEngine.r" )
-    .ifEmpty { error "Cannot find any files in the folder" }
-    .set { searchEngineFile }//input_set is the output
 	
 seachEngineParmF=seachEngineParm.flatten()	
 process  librarySearchEngine{
-maxForks 30
-container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:v2.2_cv0.7.54'
+maxForks 60
+container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:dev_v2.2_cv1.0.65'
 //publishDir "${output}/librarySearchEngine", mode: 'copy'
 
   input:
   file param from seachEngineParmF
-  each file(extraFile) from searchEngineFile
   each file(libraryFile) from searchEngineLib
 
 output:
@@ -701,12 +612,11 @@ file "${param.baseName}.csv" into AggregateMetFragIn
 
   script:
     """
-	cp ${extraFile} /usr/local/bin/${extraFile}
-	chmod +x /usr/local/bin/${extraFile}
+
 	nextFlowDIR=\$PWD
 	cd \$HOME
 	mv \$nextFlowDIR/* \$HOME/
-	librarySearchEngine.r inputLibrary=${libraryFile} inputMS2=${param} outputCSV=${param.baseName}.csv tolprecursorPPMTol=15 tolfragmentabsTol=0.07 fragmentPPMTol=30 precursorRTTol=20 searchRange=T outputSemiDecoy=T topHits=-1 ionMode=pos topScore=Scoredotproduct resample=1000
+	/usr/local/bin/librarySearchEngine.r inputLibrary=${libraryFile} inputMS2=${param} outputCSV=${param.baseName}.csv tolprecursorPPMTol=15 tolfragmentabsTol=0.07 fragmentPPMTol=30 precursorRTTol=20 searchRange=T outputSemiDecoy=T topHits=-1 ionMode=pos topScore=Scoredotproduct resample=1000
 	
     cp \$HOME/${param.baseName}.csv \$nextFlowDIR/${param.baseName}.csv
 	"""
@@ -715,7 +625,7 @@ file "${param.baseName}.csv" into AggregateMetFragIn
 
 process  AggregateMetFragLib{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:v2.2_cv0.7.54'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:dev_v2.2_cv1.0.65'
 //stageInMode 'copy'
 publishDir "${output}/AggregateMetFrag", mode: 'copy'
 maxForks = 100
@@ -736,74 +646,9 @@ file "AggregateMetFrag.csv" into prepareOutPutSIn
     cp $HOME/AggregateMetFrag.csv $nextFlowDIR/AggregateMetFrag.csv
 	'''
 }
-Channel
-    .fromPath( "/home/jovyan/work/fibro/fibro/fixname.r" )
-    .ifEmpty { error "Cannot find any files in the folder" }
-    .set { extraRfile }//input_set is the output
-	
-	
-process  fixname{
-maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
-//stageInMode 'copy'
-publishDir "${output}/fixname", mode: 'copy'
 
-  input:
-  file camInput from fixNameIn
-   each file(rfile) from extraRfile
-output:
-file "${camInput}" into PrepareOutPutInCam
-  shell:
-    '''
-	cp !{rfile} /usr/local/bin/fixname.r
-	chmod +x /usr/local/bin/fixname.r
-	
-	nextFlowDIR=$PWD
-	cd $HOME
-	cp $nextFlowDIR/* $HOME/
-	/usr/local/bin/fixname.r input=!{camInput} output=!{camInput}
-    cp $HOME/* $nextFlowDIR/
-	'''
-}
 
-Channel
-    .fromPath( "/home/jovyan/work/fibro/fibro/fixlib.r" )
-    .ifEmpty { error "Cannot find any files in the folder" }
-    .set { extraRfileLib }//input_set is the output
-	
-	
-process  fixnameLib{
-maxForks 1
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
-//stageInMode 'copy'
-publishDir "${output}/fixname", mode: 'copy'
 
-  input:
-  file camInput from prepareOutPutSIn
-   file rfile from extraRfileLib
-output:
-file "ids.csv" into prepareOutPutSInFixed
-  shell:
-    '''
-	cp !{rfile} /usr/local/bin/fixlib.r
-	chmod +x /usr/local/bin/fixlib.r
-	
-	nextFlowDIR=$PWD
-	cd $HOME
-	cp $nextFlowDIR/* $HOME/
-	/usr/local/bin/fixlib.r input=!{camInput} output=ids.csv
-    cp $HOME/ids.csv $nextFlowDIR/ids.csv
-	'''
-}
-Channel
-    .fromPath( "/home/jovyan/work/fibro/fibro/posphenoFixed.csv" )
-    .ifEmpty { error "Cannot find any files in the folder" }
-    .set { phenoPosIn2 }//input_set is the output
-
-Channel
-    .fromPath( "/home/jovyan/work/fibro/fibro/prepareOutput.r" )
-    .ifEmpty { error "Cannot find any files in the folder" }
-    .set { prepareOutputFixedFile }//input_set is the output
     
 process  PrepareOutPut{
 cpus 8
@@ -820,25 +665,45 @@ publishDir "${output}/test", mode: 'copy'
   file phenoIn from phenoPosIn2
   file camInput from PrepareOutPutInCam
   file sIn from prepareOutPutSInFixed
-  file rfile from prepareOutputFixedFile
+ 
 output:
-file "*.txt" into plsdaIn
+file "*.txt" into batcheffect
   shell:
-    '''
-    cp !{rfile} /usr/local/bin/prepareOutputFixed.r
-	chmod +x /usr/local/bin/prepareOutputFixed.r
+
 	
 	nextFlowDIR=$PWD
 	cd $HOME
 	cp $nextFlowDIR/* $HOME/
 	
-	/usr/local/bin/prepareOutputFixed.r inputcamera=!{camInput} inputscores=!{sIn} inputpheno=!{phenoIn} ppm=15 rt=20 higherTheBetter=true scoreColumn=Scoredotproduct impute=false typeColumn=Class selectedType=Sample rename=true renameCol=rename onlyReportWithID=false combineReplicate=true combineReplicateColumn=rep log=true sampleCoverage=50 sampleCoverageMethod=Groups outputPeakTable=peaktable.txt outputVariables=vars.txt outputMetaData=metadata.txt ncore=7 Ifnormalize=1
+	/usr/local/bin/prepareOutput.r inputcamera=!{camInput} inputscores=!{sIn} inputpheno=!{phenoIn} ppm=15 rt=20 higherTheBetter=true scoreColumn=Scoredotproduct impute=false typeColumn=Class selectedType=Sample rename=true renameCol=rename onlyReportWithID=false combineReplicate=true combineReplicateColumn=rep log=true sampleCoverage=50 sampleCoverageMethod=Groups outputPeakTable=peaktable.txt outputVariables=vars.txt outputMetaData=metadata.txt ncore=7 Ifnormalize=1
 	
     cp $HOME/* $nextFlowDIR/
 	'''
 }
 
+process  removebatcheffect{
 
+container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
+
+publishDir "${output}/batcheffect", mode: 'copy'
+
+  input:
+file phenoIn from batcheffect.collect()
+ 
+output:
+file "*.txt" into plsdaIn
+  shell:
+
+	'''
+	nextFlowDIR=$PWD
+	cd $HOME
+	cp $nextFlowDIR/* $HOME/
+	
+	/usr/local/bin/correctBatchEffect.r -in peaktable.txt -s metadata.txt -b1 Gender -c "Age,BMI" -out peaktable.txt
+	
+    cp $HOME/* $nextFlowDIR/
+	'''
+}
 
 
 process  plsda{
@@ -860,144 +725,3 @@ file "*.*" into finish
     cp $HOME/* $nextFlowDIR/
 	'''
 }
-	
-//zip -r Csifingerid.zip $nextFlowDIR/
-//zip Csifingerid.zip *csv
-//find . -type f -empty -delete
-//cp $nextFlowDIR/* $HOME/
-
-/*
-CsifingeridInF=CsifingeridIn.flatten()
-
-process  Csifingerid{
-maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/csifingerid:dev_v4.0_cv4.0.2'
-//stageInMode 'copy'
-//publishDir "${output}/Csifingerid", mode: 'copy'
-maxForks = 100
-
-  input:
-  file inrdata from CsifingeridInF
-
-   output:
-  file "${inrdata.baseName}.csv" into AggregateMetFragIn
-
-  script:
-    """
-	nextFlowDIR=\$PWD
-	cd \$HOME
-	cp \$nextFlowDIR/* \$HOME/
-	touch \$HOME/${inrdata.baseName}.csv
-	/usr/local/bin/fingerID.r input=\$HOME/${inrdata} database=hmdb tryOffline=T output=\$HOME/${inrdata.baseName}.csv
-    cp \$HOME/${inrdata.baseName}.csv \$nextFlowDIR/${inrdata.baseName}.csv
-	"""
-}
-
-process  AggregateMetFrag{
-maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:v2.2_cv0.7.54'
-//stageInMode 'copy'
-//publishDir "${output}/AggregateMetFrag", mode: 'copy'
-maxForks = 100
-
-  input:
-  file inrdata from AggregateMetFragIn.collect()
-
-output:
-file "AggregateMetFrag.csv" into prepareOutPutSIn
- 
-  shell:
-    '''
-	nextFlowDIR=$PWD
-	zip --quiet -r ids.zip .
-	cd $HOME
-	cp $nextFlowDIR/* $HOME/
-	find . -type f -empty -delete
-	
-	zip Csifingerid.zip *csv
-	/usr/local/bin/aggregateMetfrag.r inputs=Csifingerid.zip realNames=Csifingerid.zip output=AggregateMetFrag.csv filetype=zip
-    cp $HOME/AggregateMetFrag.csv $nextFlowDIR/AggregateMetFrag.csv
-	'''
-}
-
-Channel
-    .fromPath( "/home/jovyan/work/fibro/fibro/fixname.r" )
-    .ifEmpty { error "Cannot find any files in the folder" }
-    .set { extraRfile }//input_set is the output
-	
-	
-process  fixname{
-maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
-//stageInMode 'copy'
-//publishDir "${output}/fixname", mode: 'copy'
-
-  input:
-  file camInput from prepareOutPutSIn
-   each file(rfile) from extraRfile
-output:
-file "${camInput}" into PrepareOutPutInCam
-  shell:
-    '''
-	cp !{rfile} /usr/local/bin/fixname.r
-	chmod +x /usr/local/bin/fixname.r
-	
-	nextFlowDIR=$PWD
-	cd $HOME
-	cp $nextFlowDIR/* $HOME/
-	/usr/local/bin/fixname.r input=!{camInput} output=!{camInput}
-    cp $HOME/* $nextFlowDIR/
-	'''
-}
-
-Channel
-    .fromPath( "/home/jovyan/work/fibro/fibro/posphenoFixed.csv" )
-    .ifEmpty { error "Cannot find any files in the folder" }
-    .set { phenoPosIn2 }//input_set is the output
-
-	
-process  PrepareOutPut{
-maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
-//stageInMode 'copy'
-//publishDir "${output}/test", mode: 'copy'
-
-  input:
-  file phenoIn from phenoPosIn2
-  file camInput from PrepareOutPutInCam
-  file sIn from prepareOutPutSIn
-output:
-file "*.txt" into plsdaIn
-  shell:
-    '''
-	nextFlowDIR=$PWD
-	cd $HOME
-	cp $nextFlowDIR/* $HOME/
-	/usr/local/bin/prepareOutput.r inputcamera=!{camInput} inputscores=!{sIn} inputpheno=!{phenoIn} ppm=15 rt=20 higherTheBetter=true scoreColumn=Scoredotproduct impute=false typeColumn=Class selectedType=Sample rename=true renameCol=rename onlyReportWithID=false combineReplicate=true combineReplicateColumn=rep log=true sampleCoverage=50 sampleCoverageMethod=Groups outputPeakTable=peaktable.txt outputVariables=vars.txt outputMetaData=metadata.txt
-    cp $HOME/* $nextFlowDIR/
-	'''
-}
-
-
-process  plsda{
-maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/multivariate:v2.3.10_cv1.2.20'
-//stageInMode 'copy'
-//publishDir "${output}/plsda", mode: 'copy'
-
-  input:
-  file phenoIn from plsdaIn.collect()
-output:
-file "*.*" into finish
-  shell:
-    '''
-	nextFlowDIR=$PWD
-	cd $HOME
-	cp $nextFlowDIR/* $HOME/
-    multivariate_wrapper.R dataMatrix_in peaktable.txt sampleMetadata_in metadata.txt variableMetadata_in vars.txt respC Groups predI 2 orthoI 0 testL FALSE opgC default opcC default sampleMetadata_out mv_meta.tsv variableMetadata_out mv_vars.tsv figure mv_fig.pdf info mv_info.txt
-    cp $HOME/* $nextFlowDIR/
-	'''
-}
-	
-*/
-//find *.csv -size  0 -print0 |xargs -0 rm --
