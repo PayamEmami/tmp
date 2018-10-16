@@ -778,7 +778,7 @@ file "${mzMLFile.baseName}.rdata" into collectFilesNEG, test5NEG
 	nextFlowDIR=$PWD
 	cd $HOME
 	cp $nextFlowDIR/* $HOME/
-	/usr/local/bin/findPeaks.r input=!{mzMLFile} output=!{mzMLFile.baseName}.rdata ppm=10 peakwidthLow=4 peakwidthHigh=30 noise=1000 polarity=positive realFileName=!{mzMLFile} phenoFile=!{pheno} phenoDataColumn=Class sampleClass=sample asd=asd
+	/usr/local/bin/findPeaks.r input=!{mzMLFile} output=!{mzMLFile.baseName}.rdata ppm=10 peakwidthLow=4 peakwidthHigh=30 noise=1000 polarity=negative realFileName=!{mzMLFile} phenoFile=!{pheno} phenoDataColumn=Class sampleClass=sample asd=asd
     cp $HOME/* $nextFlowDIR/
 	'''
 }
@@ -1001,7 +1001,7 @@ file "CameraFindAdducts.rdata" into CameraFindIsotopesInNEG
 	nextFlowDIR=$PWD
 	cd $HOME
 	cp $nextFlowDIR/* $HOME/
-	/usr/local/bin/findAdducts.r input=!{inrdata} output=CameraFindAdducts.rdata ppm=10 polarity=positive
+	/usr/local/bin/findAdducts.r input=!{inrdata} output=CameraFindAdducts.rdata ppm=10 polarity=negative
     cp $HOME/CameraFindAdducts.rdata $nextFlowDIR/CameraFindAdducts.rdata
 	'''
 }
@@ -1094,7 +1094,7 @@ file "res.zip" into removeMS2DublicatedInZipNEG
 	cd $HOME
 	cp $nextFlowDIR/* $HOME/
 	mkdir $HOME/out
-	/usr/local/bin/MS2ToMetFrag.r inputCAMERA=!{incam} inputMS2=!{inrdata} output=$HOME/out precursorppm=15 fragmentppm=30 fragmentabs=0.07 database=LocalCSV mode=pos adductRules=primary minPeaks=2 removeDup=T
+	/usr/local/bin/MS2ToMetFrag.r inputCAMERA=!{incam} inputMS2=!{inrdata} output=$HOME/out precursorppm=15 fragmentppm=30 fragmentabs=0.07 database=LocalCSV mode=neg adductRules=primary minPeaks=2 removeDup=T
     zip -r res.zip $HOME/out/
 	cp $HOME/res.zip $nextFlowDIR/res.zip
 	cd $nextFlowDIR
@@ -1120,7 +1120,7 @@ file "${mzMLFile.baseName}.rdata" into CameraAnnotatePeaksInLibraryNEG
 	cd $HOME
 	cp $nextFlowDIR/* $HOME/
 	
-	/usr/local/bin/findPeaks.r input=!{mzMLFile}  output=!{mzMLFile.baseName}.rdata ppm=15 peakwidthLow=4 peakwidthHigh=50 noise=1000 polarity=positive realFileName=!{mzMLFile} sampleClass=sample asd=asd asd2=asd
+	/usr/local/bin/findPeaks.r input=!{mzMLFile}  output=!{mzMLFile.baseName}.rdata ppm=15 peakwidthLow=4 peakwidthHigh=50 noise=1000 polarity=negative realFileName=!{mzMLFile} sampleClass=sample asd=asd asd2=asd
     cp $HOME/* $nextFlowDIR/
 	'''
 }
@@ -1187,7 +1187,7 @@ file "${inrdata.baseName}.rdata" into CameraFindIsotopesInLibraryNEG
 	nextFlowDIR=$PWD
 	cd $HOME
 	cp $nextFlowDIR/* $HOME/
-	/usr/local/bin/findAdducts.r input=!{inrdata} output=!{inrdata.baseName}.rdata ppm=10 polarity=positive
+	/usr/local/bin/findAdducts.r input=!{inrdata} output=!{inrdata.baseName}.rdata ppm=10 polarity=negative
     cp $HOME/!{inrdata.baseName}.rdata $nextFlowDIR/!{inrdata.baseName}.rdata
 	'''
 }
@@ -1292,7 +1292,7 @@ file "${incam.baseName}.csv" into collectLibraryInNEG
 	cd $HOME
 	cp $nextFlowDIR/* $HOME/
 	mkdir $HOME/out
-	/usr/local/bin/createLibrary.r inputCAMERA=!{incam} inputMS2=!{inrdata} output=$HOME/!{incam.baseName}.csv precursorppm=15 fragmentppm=30 fragmentabs=0.07 database=LocalCSV mode=pos adductRules=primary maxSpectra=100000 minPeaks=2 inputLibrary=!{libraryin}  rawFileName=rawFile   compundID=HMDB.YMDB.ID   compoundName=PRIMARY_NAME  mzCol=mz whichmz=f
+	/usr/local/bin/createLibrary.r inputCAMERA=!{incam} inputMS2=!{inrdata} output=$HOME/!{incam.baseName}.csv precursorppm=15 fragmentppm=30 fragmentabs=0.07 database=LocalCSV mode=neg adductRules=primary maxSpectra=100000 minPeaks=2 inputLibrary=!{libraryin}  rawFileName=rawFile   compundID=HMDB.YMDB.ID   compoundName=PRIMARY_NAME  mzCol=mz whichmz=f
 
 	cp $HOME/!{incam.baseName}.csv $nextFlowDIR/!{incam.baseName}.csv
 	'''
@@ -1342,7 +1342,7 @@ file "${param.baseName}.csv" into AggregateMetFragInNEG
 	nextFlowDIR=\$PWD
 	cd \$HOME
 	mv \$nextFlowDIR/* \$HOME/
-	/usr/local/bin/librarySearchEngine.r inputLibrary=${libraryFile} inputMS2=${param} outputCSV=${param.baseName}.csv tolprecursorPPMTol=15 tolfragmentabsTol=0.07 fragmentPPMTol=30 precursorRTTol=20 searchRange=T outputSemiDecoy=T topHits=-1 ionMode=pos topScore=Scoredotproduct resample=1000
+	/usr/local/bin/librarySearchEngine.r inputLibrary=${libraryFile} inputMS2=${param} outputCSV=${param.baseName}.csv tolprecursorPPMTol=15 tolfragmentabsTol=0.07 fragmentPPMTol=30 precursorRTTol=20 searchRange=T outputSemiDecoy=T topHits=-1 ionMode=neg topScore=Scoredotproduct resample=1000
 	
     cp \$HOME/${param.baseName}.csv \$nextFlowDIR/${param.baseName}.csv
 	"""
