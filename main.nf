@@ -1494,3 +1494,8 @@ file "*.*" into finishAll
     cp $HOME/* $nextFlowDIR/
 	'''
 }
+
+
+
+
+
