@@ -95,7 +95,7 @@ file "${mzMLFile.baseName}.rdata" into collectFiles, test5
 
 process  collectXCMS{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.53.1_cv0.1.80'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.53.1_cv0.1.84'
 ////stageInMode 'copy'
 //publishDir "${output}/collected", mode: 'copy'
 
@@ -786,7 +786,7 @@ file "${mzMLFile.baseName}.rdata" into collectFilesNEG, test5NEG
 
 process  collectXCMSNEG{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.53.1_cv0.1.80'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.53.1_cv0.1.84'
 ////stageInMode 'copy'
 //publishDir "${output}/collectedNEG", mode: 'copy'
 
