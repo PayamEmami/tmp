@@ -704,7 +704,7 @@ publishDir "${output}/test", mode: 'copy'
 output:
 file "*.txt" into batcheffect
   shell:
-
+'''
 	
 	nextFlowDIR=$PWD
 	cd $HOME
@@ -1395,7 +1395,7 @@ publishDir "${output}/testNEG", mode: 'copy'
 output:
 file "*.txt" into batcheffectNEG
   shell:
-
+'''
 	
 	nextFlowDIR=$PWD
 	cd $HOME
@@ -1494,8 +1494,4 @@ file "*.*" into finishAll
     cp $HOME/* $nextFlowDIR/
 	'''
 }
-
-
-
-
 
