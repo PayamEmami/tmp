@@ -699,7 +699,7 @@ publishDir "${output}/test", mode: 'copy'
   input:
   file phenoIn from phenoPosIn2
   file camInput from PrepareOutPutInCam
-  file sIn from prepareOutPutSInFixed
+  file sIn from prepareOutPutSIn
  
 output:
 file "*.txt" into batcheffect
@@ -1390,7 +1390,7 @@ publishDir "${output}/testNEG", mode: 'copy'
   input:
   file phenoIn from phenoPosIn2NEG
   file camInput from PrepareOutPutInCamNEG
-  file sIn from prepareOutPutSInFixedNEG
+  file sIn from prepareOutPutSInNEG
  
 output:
 file "*.txt" into batcheffectNEG
