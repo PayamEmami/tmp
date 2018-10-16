@@ -73,7 +73,7 @@ output="/home/jovyan/work/fibro/MS2data/outNoFilter"
 	
 process  XcmsFindPeaks{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.52.0_cv0.8.70'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.53.1_cv0.1.84'
 ////stageInMode 'copy'
 //publishDir "${output}/findPeaks", mode: 'copy'
 
@@ -119,7 +119,7 @@ script:
 
 process  groupPeaks_1{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.52.0_cv0.8.70'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.53.1_cv0.1.84'
 ////stageInMode 'copy'
 //publishDir "${output}/group1", mode: 'copy'
 
@@ -142,7 +142,7 @@ file "group1.rdata" into rtCorrectIn
 
 process  retcorP{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.52.0_cv0.8.70'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.53.1_cv0.1.84'
 ////stageInMode 'copy'
 //publishDir "${output}/rtcor", mode: 'copy'
 
@@ -164,7 +164,7 @@ file "corrected.rdata" into groupPeaksN2
 
 process  groupPeaks_2{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.52.0_cv0.8.70'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.53.1_cv0.1.84'
 ////stageInMode 'copy'
 //publishDir "${output}/group2", mode: 'copy'
 
@@ -186,7 +186,7 @@ file "group2.rdata" into CameraAnnotatePeaksIn
 /*
 process  blankFilterP{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.52.0_cv0.8.70'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.53.1_cv0.1.84'
 //stageInMode 'copy'
 //publishDir "${output}/blankFilter", mode: 'copy'
 
@@ -208,7 +208,7 @@ file "blankFiltered.rdata" into dilutionFilter
 
 process  dilutionFilterP{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.52.0_cv0.8.70'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.53.1_cv0.1.84'
 //stageInMode 'copy'
 //publishDir "${output}/dilutionFilter", mode: 'copy'
 
@@ -230,7 +230,7 @@ file "dilutionFiltered.rdata" into cvFilter
 
 process  cvFilterP{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.52.0_cv0.8.70'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.53.1_cv0.1.84'
 //stageInMode 'copy'
 //publishDir "${output}/cvFilter", mode: 'copy'
 
@@ -251,7 +251,7 @@ file "cvFiltered.rdata" into CameraAnnotatePeaksIn
 */
 process  CameraAnnotatePeaks{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:dev_v1.33.3_cv0.10.65'
 //stageInMode 'copy'
 //publishDir "${output}/CameraAnnotatePeaks", mode: 'copy'
 
@@ -273,7 +273,7 @@ file "CameraAnnotatePeaks.rdata" into CameraGroupIn
 
 process  CameraGroup{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:dev_v1.33.3_cv0.10.65'
 //stageInMode 'copy'
 //publishDir "${output}/CameraGroup", mode: 'copy'
 
@@ -295,7 +295,7 @@ file "CameraGroup.rdata" into CameraFindAdductsIn
 
 process  CameraFindAdducts{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:dev_v1.33.3_cv0.10.65'
 //stageInMode 'copy'
 //publishDir "${output}/CameraFindAdducts", mode: 'copy'
 
@@ -317,7 +317,7 @@ file "CameraFindAdducts.rdata" into CameraFindIsotopesIn
 
 process  CameraFindIsotopes{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:dev_v1.33.3_cv0.10.65'
 //stageInMode 'copy'
 //publishDir "${output}/CameraFindIsotopes", mode: 'copy'
 
@@ -415,7 +415,7 @@ file "res.zip" into removeMS2DublicatedInZip
 	
 process  XcmsFindPeaksLibrary{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.52.0_cv0.8.70'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.53.1_cv0.1.84'
 //stageInMode 'copy'
 //publishDir "${output}/findPeaksLibrary", mode: 'copy'
 
@@ -437,7 +437,7 @@ file "${mzMLFile.baseName}.rdata" into CameraAnnotatePeaksInLibrary
 
 process  CameraAnnotatePeaksLibrary{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:dev_v1.33.3_cv0.10.65'
 //stageInMode 'copy'
 //publishDir "${output}/CameraAnnotatePeaksLibrary", mode: 'copy'
 
@@ -459,7 +459,7 @@ file "${inrdata.baseName}.rdata" into CameraGroupInLibrary
 
 process  CameraGroupLibrary{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:dev_v1.33.3_cv0.10.65'
 //stageInMode 'copy'
 //publishDir "${output}/CameraGroupLibrary", mode: 'copy'
 
@@ -481,7 +481,7 @@ file "${inrdata.baseName}.rdata" into CameraFindAdductsInLibrary
 
 process  CameraFindAdductsLibrary{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:dev_v1.33.3_cv0.10.65'
 //stageInMode 'copy'
 //publishDir "${output}/CameraFindAdductsLibrary", mode: 'copy'
 
@@ -503,7 +503,7 @@ file "${inrdata.baseName}.rdata" into CameraFindIsotopesInLibrary
 
 process  CameraFindIsotopesLibrary{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:dev_v1.33.3_cv0.10.65'
 //stageInMode 'copy'
 //publishDir "${output}/CameraFindIsotopesLibrary", mode: 'copy'
 
@@ -692,7 +692,7 @@ memory { 15.GB * task.attempt }
 
     errorStrategy { task.exitStatus == 137 ? 'retry' : 'terminate' }
     maxRetries 3
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:dev_v1.33.3_cv0.10.65'
 
 publishDir "${output}/test", mode: 'copy'
 
@@ -710,7 +710,7 @@ file "*.txt" into batcheffect
 	cd $HOME
 	cp $nextFlowDIR/* $HOME/
 	
-	/usr/local/bin/prepareOutput.r inputcamera=!{camInput} inputscores=!{sIn} inputpheno=!{phenoIn} ppm=15 rt=20 higherTheBetter=true scoreColumn=Scoredotproduct impute=false typeColumn=Class selectedType=Sample rename=true renameCol=rename onlyReportWithID=false combineReplicate=true combineReplicateColumn=rep log=true sampleCoverage=50 sampleCoverageMethod=Groups outputPeakTable=peaktable.txt outputVariables=vars.txt outputMetaData=metadata.txt ncore=7 Ifnormalize=1
+	/usr/local/bin/prepareOutput.r inputcamera=!{camInput} inputscores=!{sIn} inputpheno=!{phenoIn} ppm=15 rt=20 higherTheBetter=true scoreColumn=Scoredotproduct impute=false typeColumn=Class selectedType=Sample rename=true renameCol=rename onlyReportWithID=false combineReplicate=true combineReplicateColumn=rep log=true sampleCoverage=50 sampleCoverageMethod=Groups outputPeakTable=peaktablePOS.txt outputVariables=varsPOS.txt outputMetaData=metadataPOS.txt ncore=7 Ifnormalize=1
 	
     cp $HOME/* $nextFlowDIR/
 	'''
@@ -718,7 +718,7 @@ file "*.txt" into batcheffect
 
 process  removebatcheffect{
 
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:dev_v1.33.3_cv0.10.65'
 
 publishDir "${output}/batcheffect", mode: 'copy'
 
@@ -726,7 +726,7 @@ publishDir "${output}/batcheffect", mode: 'copy'
 file phenoIn from batcheffect.collect()
  
 output:
-file "*.txt" into plsdaIn
+file "*.txt" into plsdaIn, combineDataPOS
   shell:
 
 	'''
@@ -734,7 +734,7 @@ file "*.txt" into plsdaIn
 	cd $HOME
 	cp $nextFlowDIR/* $HOME/
 	
-	/usr/local/bin/correctBatchEffect.r -in peaktable.txt -s metadata.txt -b1 Gender -c "Age,BMI" -out peaktable.txt
+	/usr/local/bin/correctBatchEffect.r -in peaktablePOS.txt -s metadataPOS.txt -b1 Gender -c "Age,BMI" -out peaktablePOS.txt
 	
     cp $HOME/* $nextFlowDIR/
 	'''
@@ -756,7 +756,7 @@ file "*.*" into finish
 	nextFlowDIR=$PWD
 	cd $HOME
 	cp $nextFlowDIR/* $HOME/
-    multivariate_wrapper.R dataMatrix_in peaktable.txt sampleMetadata_in metadata.txt variableMetadata_in vars.txt respC Groups predI 2 orthoI 0 testL FALSE opgC default opcC default sampleMetadata_out mv_meta.tsv variableMetadata_out mv_vars.tsv figure mv_fig.pdf info mv_info.txt
+    multivariate_wrapper.R dataMatrix_in peaktablePOS.txt sampleMetadata_in metadataPOS.txt variableMetadata_in varsPOS.txt respC Groups predI 2 orthoI 0 testL FALSE opgC default opcC default sampleMetadata_out mv_meta.tsv variableMetadata_out mv_vars.tsv figure mv_fig.pdf info mv_info.txt
     cp $HOME/* $nextFlowDIR/
 	'''
 }
@@ -764,7 +764,7 @@ file "*.*" into finish
 	
 process  XcmsFindPeaksNEG{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.52.0_cv0.8.70'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.53.1_cv0.1.84'
 ////stageInMode 'copy'
 //publishDir "${output}/findPeaksNEG", mode: 'copy'
 
@@ -810,7 +810,7 @@ script:
 
 process  groupPeaks_1NEG{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.52.0_cv0.8.70'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.53.1_cv0.1.84'
 ////stageInMode 'copy'
 //publishDir "${output}/group1NEG", mode: 'copy'
 
@@ -833,7 +833,7 @@ file "group1.rdata" into rtCorrectInNEG
 
 process  retcorPNEG{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.52.0_cv0.8.70'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.53.1_cv0.1.84'
 ////stageInMode 'copy'
 //publishDir "${output}/rtcor", mode: 'copy'
 
@@ -855,7 +855,7 @@ file "corrected.rdata" into groupPeaksN2NEG
 
 process  groupPeaks_2NEG{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.52.0_cv0.8.70'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.53.1_cv0.1.84'
 ////stageInMode 'copy'
 //publishDir "${output}/group2NEG", mode: 'copy'
 
@@ -877,7 +877,7 @@ file "group2.rdata" into CameraAnnotatePeaksInNEG
 /*
 process  blankFilterPNEG{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.52.0_cv0.8.70'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.53.1_cv0.1.84'
 //stageInMode 'copy'
 //publishDir "${output}/blankFilterNEG", mode: 'copy'
 
@@ -899,7 +899,7 @@ file "blankFiltered.rdata" into dilutionFilterNEG
 
 process  dilutionFilterPNEG{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.52.0_cv0.8.70'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.53.1_cv0.1.84'
 //stageInMode 'copy'
 //publishDir "${output}/dilutionFilterNEG", mode: 'copy'
 
@@ -921,7 +921,7 @@ file "dilutionFiltered.rdata" into cvFilterNEG
 
 process  cvFilterPNEG{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.52.0_cv0.8.70'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.53.1_cv0.1.84'
 //stageInMode 'copy'
 //publishDir "${output}/cvFilter", mode: 'copy'
 
@@ -942,7 +942,7 @@ file "cvFiltered.rdata" into CameraAnnotatePeaksInNEG
 */
 process  CameraAnnotatePeaksNEG{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:dev_v1.33.3_cv0.10.65'
 //stageInMode 'copy'
 //publishDir "${output}/CameraAnnotatePeaksNEG", mode: 'copy'
 
@@ -964,7 +964,7 @@ file "CameraAnnotatePeaks.rdata" into CameraGroupInNEG
 
 process  CameraGroupNEG{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:dev_v1.33.3_cv0.10.65'
 //stageInMode 'copy'
 //publishDir "${output}/CameraGroupNEG", mode: 'copy'
 
@@ -986,7 +986,7 @@ file "CameraGroup.rdata" into CameraFindAdductsInNEG
 
 process  CameraFindAdductsNEG{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:dev_v1.33.3_cv0.10.65'
 //stageInMode 'copy'
 //publishDir "${output}/CameraFindAdducts", mode: 'copy'
 
@@ -1008,7 +1008,7 @@ file "CameraFindAdducts.rdata" into CameraFindIsotopesInNEG
 
 process  CameraFindIsotopesNEG{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:dev_v1.33.3_cv0.10.65'
 //stageInMode 'copy'
 //publishDir "${output}/CameraFindIsotopesNEG", mode: 'copy'
 
@@ -1106,7 +1106,7 @@ file "res.zip" into removeMS2DublicatedInZipNEG
 	
 process  XcmsFindPeaksLibraryNEG{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.52.0_cv0.8.70'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/xcms:dev_v1.53.1_cv0.1.84'
 //stageInMode 'copy'
 //publishDir "${output}/findPeaksLibraryNEG", mode: 'copy'
 
@@ -1128,7 +1128,7 @@ file "${mzMLFile.baseName}.rdata" into CameraAnnotatePeaksInLibraryNEG
 
 process  CameraAnnotatePeaksLibraryNEG{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:dev_v1.33.3_cv0.10.65'
 //stageInMode 'copy'
 //publishDir "${output}/CameraAnnotatePeaksLibraryNEG", mode: 'copy'
 
@@ -1150,7 +1150,7 @@ file "${inrdata.baseName}.rdata" into CameraGroupInLibraryNEG
 
 process  CameraGroupLibraryNEG{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:dev_v1.33.3_cv0.10.65'
 //stageInMode 'copy'
 //publishDir "${output}/CameraGroupLibraryNEG", mode: 'copy'
 
@@ -1172,7 +1172,7 @@ file "${inrdata.baseName}.rdata" into CameraFindAdductsInLibraryNEG
 
 process  CameraFindAdductsLibraryNEG{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:dev_v1.33.3_cv0.10.65'
 //stageInMode 'copy'
 //publishDir "${output}/CameraFindAdductsLibraryNEG", mode: 'copy'
 
@@ -1194,7 +1194,7 @@ file "${inrdata.baseName}.rdata" into CameraFindIsotopesInLibraryNEG
 
 process  CameraFindIsotopesLibraryNEG{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:dev_v1.33.3_cv0.10.65'
 //stageInMode 'copy'
 //publishDir "${output}/CameraFindIsotopesLibraryNEG", mode: 'copy'
 
@@ -1383,7 +1383,7 @@ memory { 15.GB * task.attempt }
 
     errorStrategy { task.exitStatus == 137 ? 'retry' : 'terminate' }
     maxRetries 3
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:dev_v1.33.3_cv0.10.65'
 
 publishDir "${output}/testNEG", mode: 'copy'
 
@@ -1401,7 +1401,7 @@ file "*.txt" into batcheffectNEG
 	cd $HOME
 	cp $nextFlowDIR/* $HOME/
 	
-	/usr/local/bin/prepareOutput.r inputcamera=!{camInput} inputscores=!{sIn} inputpheno=!{phenoIn} ppm=15 rt=20 higherTheBetter=true scoreColumn=Scoredotproduct impute=false typeColumn=Class selectedType=Sample rename=true renameCol=rename onlyReportWithID=false combineReplicate=true combineReplicateColumn=rep log=true sampleCoverage=50 sampleCoverageMethod=Groups outputPeakTable=peaktable.txt outputVariables=vars.txt outputMetaData=metadata.txt ncore=7 Ifnormalize=1
+	/usr/local/bin/prepareOutput.r inputcamera=!{camInput} inputscores=!{sIn} inputpheno=!{phenoIn} ppm=15 rt=20 higherTheBetter=true scoreColumn=Scoredotproduct impute=false typeColumn=Class selectedType=Sample rename=true renameCol=rename onlyReportWithID=false combineReplicate=true combineReplicateColumn=rep log=true sampleCoverage=50 sampleCoverageMethod=Groups outputPeakTable=peaktableNEG.txt outputVariables=varsNEG.txt outputMetaData=metadataNEG.txt ncore=7 Ifnormalize=1
 	
     cp $HOME/* $nextFlowDIR/
 	'''
@@ -1409,7 +1409,7 @@ file "*.txt" into batcheffectNEG
 
 process  removebatcheffectNEG{
 
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:v1.33.3_cv0.10.59'
+container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:dev_v1.33.3_cv0.10.65'
 
 publishDir "${output}/batcheffectNEG", mode: 'copy'
 
@@ -1417,7 +1417,7 @@ publishDir "${output}/batcheffectNEG", mode: 'copy'
 file phenoIn from batcheffectNEG.collect()
  
 output:
-file "*.txt" into plsdaInNEG
+file "*.txt" into plsdaInNEG, combineDataNEG
   shell:
 
 	'''
@@ -1425,7 +1425,7 @@ file "*.txt" into plsdaInNEG
 	cd $HOME
 	cp $nextFlowDIR/* $HOME/
 	
-	/usr/local/bin/correctBatchEffect.r -in peaktable.txt -s metadata.txt -b1 Gender -c "Age,BMI" -out peaktable.txt
+	/usr/local/bin/correctBatchEffect.r -in peaktableNEG.txt -s metadataNEG.txt -b1 Gender -c "Age,BMI" -out peaktableNEG.txt
 	
     cp $HOME/* $nextFlowDIR/
 	'''
@@ -1442,6 +1442,49 @@ publishDir "${output}/plsdaNEG", mode: 'copy'
   file phenoIn from plsdaInNEG.collect()
 output:
 file "*.*" into finishNEG
+  shell:
+    '''
+	nextFlowDIR=$PWD
+	cd $HOME
+	cp $nextFlowDIR/* $HOME/
+    multivariate_wrapper.R dataMatrix_in peaktable.txt sampleMetadata_in metadata.txt variableMetadata_in vars.txt respC Groups predI 2 orthoI 0 testL FALSE opgC default opcC default sampleMetadata_out mv_meta.tsv variableMetadata_out mv_vars.tsv figure mv_fig.pdf info mv_info.txt
+    cp $HOME/* $nextFlowDIR/
+	'''
+}
+
+
+process  combineData{
+maxForks 5
+container 'container-registry.phenomenal-h2020.eu/phnmnl/multivariate:v2.3.10_cv1.2.20'
+//stageInMode 'copy'
+publishDir "${output}/combineData", mode: 'copy'
+
+  input:
+  file phenoInPOS from combineDataPOS.collect()
+  file phenoInNEG from combineDataNEG.collect()
+output:
+file "*.*" into plsdaCombIN
+  shell:
+    '''
+	nextFlowDIR=$PWD
+	cd $HOME
+	cp $nextFlowDIR/* $HOME/
+    /usr/local/bin/mergeVaribales.r -in peaktablePOS.txt,peaktableNEG.txt -p varPOS.txt,varNEG.txt -s metadataPOS.txt -out peaktable.txt -outp var.txt
+	mv metadataPOS.txt metadata.txt 
+    cp $HOME/* $nextFlowDIR/
+	'''
+}
+
+process  plsdaCombined{
+maxForks 5
+container 'container-registry.phenomenal-h2020.eu/phnmnl/multivariate:v2.3.10_cv1.2.20'
+//stageInMode 'copy'
+publishDir "${output}/plsdaCombined", mode: 'copy'
+
+  input:
+  file phenoIn from plsdaCombIN.collect()
+output:
+file "*.*" into finishAll
   shell:
     '''
 	nextFlowDIR=$PWD
