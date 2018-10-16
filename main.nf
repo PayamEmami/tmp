@@ -251,7 +251,7 @@ file "cvFiltered.rdata" into CameraAnnotatePeaksIn
 */
 process  CameraAnnotatePeaks{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:dev_v1.33.3_cv0.10.65'
+container 'registry.hub.docker.com/payamemami/container-camera:m1'
 //stageInMode 'copy'
 //publishDir "${output}/CameraAnnotatePeaks", mode: 'copy'
 
@@ -273,7 +273,7 @@ file "CameraAnnotatePeaks.rdata" into CameraGroupIn
 
 process  CameraGroup{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:dev_v1.33.3_cv0.10.65'
+container 'registry.hub.docker.com/payamemami/container-camera:m1'
 //stageInMode 'copy'
 //publishDir "${output}/CameraGroup", mode: 'copy'
 
@@ -295,7 +295,7 @@ file "CameraGroup.rdata" into CameraFindAdductsIn
 
 process  CameraFindAdducts{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:dev_v1.33.3_cv0.10.65'
+container 'registry.hub.docker.com/payamemami/container-camera:m1'
 //stageInMode 'copy'
 //publishDir "${output}/CameraFindAdducts", mode: 'copy'
 
@@ -317,7 +317,7 @@ file "CameraFindAdducts.rdata" into CameraFindIsotopesIn
 
 process  CameraFindIsotopes{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:dev_v1.33.3_cv0.10.65'
+container 'registry.hub.docker.com/payamemami/container-camera:m1'
 //stageInMode 'copy'
 //publishDir "${output}/CameraFindIsotopes", mode: 'copy'
 
@@ -437,7 +437,7 @@ file "${mzMLFile.baseName}.rdata" into CameraAnnotatePeaksInLibrary
 
 process  CameraAnnotatePeaksLibrary{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:dev_v1.33.3_cv0.10.65'
+container 'registry.hub.docker.com/payamemami/container-camera:m1'
 //stageInMode 'copy'
 //publishDir "${output}/CameraAnnotatePeaksLibrary", mode: 'copy'
 
@@ -459,7 +459,7 @@ file "${inrdata.baseName}.rdata" into CameraGroupInLibrary
 
 process  CameraGroupLibrary{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:dev_v1.33.3_cv0.10.65'
+container 'registry.hub.docker.com/payamemami/container-camera:m1'
 //stageInMode 'copy'
 //publishDir "${output}/CameraGroupLibrary", mode: 'copy'
 
@@ -481,7 +481,7 @@ file "${inrdata.baseName}.rdata" into CameraFindAdductsInLibrary
 
 process  CameraFindAdductsLibrary{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:dev_v1.33.3_cv0.10.65'
+container 'registry.hub.docker.com/payamemami/container-camera:m1'
 //stageInMode 'copy'
 //publishDir "${output}/CameraFindAdductsLibrary", mode: 'copy'
 
@@ -503,7 +503,7 @@ file "${inrdata.baseName}.rdata" into CameraFindIsotopesInLibrary
 
 process  CameraFindIsotopesLibrary{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:dev_v1.33.3_cv0.10.65'
+container 'registry.hub.docker.com/payamemami/container-camera:m1'
 //stageInMode 'copy'
 //publishDir "${output}/CameraFindIsotopesLibrary", mode: 'copy'
 
@@ -692,7 +692,7 @@ memory { 15.GB * task.attempt }
 
     errorStrategy { task.exitStatus == 137 ? 'retry' : 'terminate' }
     maxRetries 3
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:dev_v1.33.3_cv0.10.65'
+container 'registry.hub.docker.com/payamemami/container-camera:m1'
 
 publishDir "${output}/test", mode: 'copy'
 
@@ -718,7 +718,7 @@ file "*.txt" into batcheffect
 
 process  removebatcheffect{
 
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:dev_v1.33.3_cv0.10.65'
+container 'registry.hub.docker.com/payamemami/container-camera:m1'
 
 publishDir "${output}/batcheffect", mode: 'copy'
 
@@ -942,7 +942,7 @@ file "cvFiltered.rdata" into CameraAnnotatePeaksInNEG
 */
 process  CameraAnnotatePeaksNEG{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:dev_v1.33.3_cv0.10.65'
+container 'registry.hub.docker.com/payamemami/container-camera:m1'
 //stageInMode 'copy'
 //publishDir "${output}/CameraAnnotatePeaksNEG", mode: 'copy'
 
@@ -964,7 +964,7 @@ file "CameraAnnotatePeaks.rdata" into CameraGroupInNEG
 
 process  CameraGroupNEG{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:dev_v1.33.3_cv0.10.65'
+container 'registry.hub.docker.com/payamemami/container-camera:m1'
 //stageInMode 'copy'
 //publishDir "${output}/CameraGroupNEG", mode: 'copy'
 
@@ -986,7 +986,7 @@ file "CameraGroup.rdata" into CameraFindAdductsInNEG
 
 process  CameraFindAdductsNEG{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:dev_v1.33.3_cv0.10.65'
+container 'registry.hub.docker.com/payamemami/container-camera:m1'
 //stageInMode 'copy'
 //publishDir "${output}/CameraFindAdducts", mode: 'copy'
 
@@ -1008,7 +1008,7 @@ file "CameraFindAdducts.rdata" into CameraFindIsotopesInNEG
 
 process  CameraFindIsotopesNEG{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:dev_v1.33.3_cv0.10.65'
+container 'registry.hub.docker.com/payamemami/container-camera:m1'
 //stageInMode 'copy'
 //publishDir "${output}/CameraFindIsotopesNEG", mode: 'copy'
 
@@ -1128,7 +1128,7 @@ file "${mzMLFile.baseName}.rdata" into CameraAnnotatePeaksInLibraryNEG
 
 process  CameraAnnotatePeaksLibraryNEG{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:dev_v1.33.3_cv0.10.65'
+container 'registry.hub.docker.com/payamemami/container-camera:m1'
 //stageInMode 'copy'
 //publishDir "${output}/CameraAnnotatePeaksLibraryNEG", mode: 'copy'
 
@@ -1150,7 +1150,7 @@ file "${inrdata.baseName}.rdata" into CameraGroupInLibraryNEG
 
 process  CameraGroupLibraryNEG{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:dev_v1.33.3_cv0.10.65'
+container 'registry.hub.docker.com/payamemami/container-camera:m1'
 //stageInMode 'copy'
 //publishDir "${output}/CameraGroupLibraryNEG", mode: 'copy'
 
@@ -1172,7 +1172,7 @@ file "${inrdata.baseName}.rdata" into CameraFindAdductsInLibraryNEG
 
 process  CameraFindAdductsLibraryNEG{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:dev_v1.33.3_cv0.10.65'
+container 'registry.hub.docker.com/payamemami/container-camera:m1'
 //stageInMode 'copy'
 //publishDir "${output}/CameraFindAdductsLibraryNEG", mode: 'copy'
 
@@ -1194,7 +1194,7 @@ file "${inrdata.baseName}.rdata" into CameraFindIsotopesInLibraryNEG
 
 process  CameraFindIsotopesLibraryNEG{
 maxForks 5
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:dev_v1.33.3_cv0.10.65'
+container 'registry.hub.docker.com/payamemami/container-camera:m1'
 //stageInMode 'copy'
 //publishDir "${output}/CameraFindIsotopesLibraryNEG", mode: 'copy'
 
@@ -1383,7 +1383,7 @@ memory { 15.GB * task.attempt }
 
     errorStrategy { task.exitStatus == 137 ? 'retry' : 'terminate' }
     maxRetries 3
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:dev_v1.33.3_cv0.10.65'
+container 'registry.hub.docker.com/payamemami/container-camera:m1'
 
 publishDir "${output}/testNEG", mode: 'copy'
 
@@ -1409,7 +1409,7 @@ file "*.txt" into batcheffectNEG
 
 process  removebatcheffectNEG{
 
-container 'container-registry.phenomenal-h2020.eu/phnmnl/camera:dev_v1.33.3_cv0.10.65'
+container 'registry.hub.docker.com/payamemami/container-camera:m1'
 
 publishDir "${output}/batcheffectNEG", mode: 'copy'
 
