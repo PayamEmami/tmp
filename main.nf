@@ -634,7 +634,7 @@ file "library.csv" into searchEngineLib
 	
 seachEngineParmF=seachEngineParm.flatten()	
 process  librarySearchEngine{
-maxForks 60
+maxForks 30
 container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:dev_v2.2_cv1.0.65'
 //publishDir "${output}/librarySearchEngine", mode: 'copy'
 
@@ -1325,7 +1325,7 @@ file "library.csv" into searchEngineLibNEG
 	
 seachEngineParmFNEG=seachEngineParmNEG.flatten()	
 process  librarySearchEngineNEG{
-maxForks 60
+maxForks 30
 container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:dev_v2.2_cv1.0.65'
 //publishDir "${output}/librarySearchEngineNEG", mode: 'copy'
 
