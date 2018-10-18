@@ -634,7 +634,7 @@ file "library.csv" into searchEngineLib
 	
 seachEngineParmF=seachEngineParm.flatten()	
 process  librarySearchEngine{
-maxForks 30
+maxForks 15
 container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:dev_v2.2_cv1.0.65'
 //publishDir "${output}/librarySearchEngine", mode: 'copy'
 
@@ -740,7 +740,7 @@ file "*.txt" into plsdaIn, combineDataPOS
 	'''
 }
 
-
+/*
 process  plsda{
 maxForks 5
 container 'container-registry.phenomenal-h2020.eu/phnmnl/multivariate:v2.3.10_cv1.2.20'
@@ -760,7 +760,7 @@ file "*.*" into finish
     cp $HOME/* $nextFlowDIR/
 	'''
 }
-
+*/
 	
 process  XcmsFindPeaksNEG{
 maxForks 5
@@ -1325,7 +1325,7 @@ file "library.csv" into searchEngineLibNEG
 	
 seachEngineParmFNEG=seachEngineParmNEG.flatten()	
 process  librarySearchEngineNEG{
-maxForks 30
+maxForks 15
 container 'container-registry.phenomenal-h2020.eu/phnmnl/msnbase:dev_v2.2_cv1.0.65'
 //publishDir "${output}/librarySearchEngineNEG", mode: 'copy'
 
@@ -1431,7 +1431,7 @@ file "*.txt" into plsdaInNEG, combineDataNEG
 	'''
 }
 
-
+/*
 process  plsdaNEG{
 maxForks 5
 container 'container-registry.phenomenal-h2020.eu/phnmnl/multivariate:v2.3.10_cv1.2.20'
@@ -1451,7 +1451,7 @@ file "*.*" into finishNEG
     cp $HOME/* $nextFlowDIR/
 	'''
 }
-
+*/
 
 process  combineData{
 maxForks 5
