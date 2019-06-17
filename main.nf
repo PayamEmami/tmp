@@ -23,7 +23,7 @@ Channel
     .set { mzMLFilesMS1Library }//input_set is the output
 
 	Channel
-    .fromPath( "/home/jovyan/work/fibro/MS2data/libraryFiles/POS/*.mzML" )
+    .fromPath( "/home/jovyan/work/MS2data/libraryFiles/POS/*.mzML" )
     .ifEmpty { error "Cannot find any files in the folder" }
     .set { mzMLFilesMS2Library }//input_set is the output
 	
@@ -45,7 +45,7 @@ Channel
     .set { mzMLFilesMS2NEG }//input_set is the output
 	
 Channel
-    .fromPath( "/home/jovyan/work/fibro/MS2data/negpheno.csv" )
+    .fromPath( "/home/jovyan/work/MS2data/negpheno.csv" )
     .ifEmpty { error "Cannot find any files in the folder" }
     .into { phenoPosInNEG;phenoPosIn2NEG }//input_set is the output
 
