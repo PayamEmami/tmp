@@ -2,23 +2,23 @@
 
 
 Channel
-    .fromPath( "/home/jovyan/work/fibro/MS2data/metaboRawFiles/POS/*.mzML" )
+    .fromPath( "/home/jovyan/work/MS2data/metaboRawFiles/POS/*.mzML" )
     .ifEmpty { error "Cannot find any files in the folder" }
     .set { mzMLFilesMS1 }//input_set is the output
 
 	Channel
-    .fromPath( "/home/jovyan/work/fibro/MS2data/Huntington_STEPHfiles/pos/MS2/*.mzML" )
+    .fromPath( "/home/jovyan/work/MS2data/Huntington_STEPHfiles/pos/MS2/*.mzML" )
     .ifEmpty { error "Cannot find any files in the folder" }
     .set { mzMLFilesMS2 }//input_set is the output
 	
 Channel
-    .fromPath( "/home/jovyan/work/fibro/MS2data/pospheno.csv" )
+    .fromPath( "/home/jovyan/work/MS2data/pospheno.csv" )
     .ifEmpty { error "Cannot find any files in the folder" }
     .into { phenoPosIn;phenoPosIn2 }//input_set is the output
 
 
 Channel
-    .fromPath( "/home/jovyan/work/fibro/MS2data/libraryFiles/POS/*.mzML" )
+    .fromPath( "/home/jovyan/work/MS2data/libraryFiles/POS/*.mzML" )
     .ifEmpty { error "Cannot find any files in the folder" }
     .set { mzMLFilesMS1Library }//input_set is the output
 
@@ -29,18 +29,18 @@ Channel
 	
 	
 Channel
-    .fromPath( "/home/jovyan/work/fibro/MS2data/libPos.csv" )
+    .fromPath( "/home/jovyan/work/MS2data/libPos.csv" )
     .ifEmpty { error "Cannot find any files in the folder" }
     .set { libraryInfo }//input_set is the output
 		
 
 Channel
-    .fromPath( "/home/jovyan/work/fibro/MS2data/metaboRawFiles/NEG/*.mzML" )
+    .fromPath( "/home/jovyan/work/MS2data/metaboRawFiles/NEG/*.mzML" )
     .ifEmpty { error "Cannot find any files in the folder" }
     .set { mzMLFilesMS1NEG }//input_set is the output
 
 	Channel
-    .fromPath( "/home/jovyan/work/fibro/MS2data/Huntington_STEPHfiles/neg/MS2/*.mzML" )
+    .fromPath( "/home/jovyan/work/MS2data/Huntington_STEPHfiles/neg/MS2/*.mzML" )
     .ifEmpty { error "Cannot find any files in the folder" }
     .set { mzMLFilesMS2NEG }//input_set is the output
 	
@@ -51,24 +51,24 @@ Channel
 
 
 Channel
-    .fromPath( "/home/jovyan/work/fibro/MS2data/libraryFiles/NEG/*.mzML" )
+    .fromPath( "/home/jovyan/work/MS2data/libraryFiles/NEG/*.mzML" )
     .ifEmpty { error "Cannot find any files in the folder" }
     .set { mzMLFilesMS1LibraryNEG }//input_set is the output
 
 	Channel
-    .fromPath( "/home/jovyan/work/fibro/MS2data/libraryFiles/NEG/*.mzML" )
+    .fromPath( "/home/jovyan/work/MS2data/libraryFiles/NEG/*.mzML" )
     .ifEmpty { error "Cannot find any files in the folder" }
     .set { mzMLFilesMS2LibraryNEG }//input_set is the output
 	
 	
 Channel
-    .fromPath( "/home/jovyan/work/fibro/MS2data/libNeg.csv" )
+    .fromPath( "/home/jovyan/work/MS2data/libNeg.csv" )
     .ifEmpty { error "Cannot find any files in the folder" }
     .set { libraryInfoNEG }//input_set is the output
 		
 
 
-output="/home/jovyan/work/fibro/MS2data/outNoFilter"
+output="/home/jovyan/work/MS2data/outNoFilter"
 
 	
 process  XcmsFindPeaks{
